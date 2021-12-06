@@ -1,8 +1,10 @@
-# Gateway Tools
+# Gateway Tools for UI5/Fiori
 
-Gateway Helper Tools for Fiori Developers, Application Managers.
+Gateway Helper Tools for Fiori Developers, Application Managers to wipe dirty caches.
 
 Very plain, simple and old-school. Designed for copy paste :) .
+
+Installation: pull this repo using ABAPGit or copy-paste report source: zgw_tools.prog.abap into a GW (FES) or S/4HANA System.
 
 Validated on ABAP 1909.
 ___
