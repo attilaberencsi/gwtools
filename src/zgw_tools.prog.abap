@@ -8,18 +8,13 @@
 *&
 *& Software Component  Release     Support Package       Support Package Level  Description
 *& ========================================================================================================
-*& DMIS                2011_1_731  SAPK-11616INDMIS      0016                   DMIS 2011_1
-*& MDG_FND             804         SAPK-80402INMDGFND    0002                   MDG Foundation
 *& S4FND               104         SAPK-10402INS4FND     0002                   Foundation
 *& SAP_ABA             75E         SAPK-75E02INSAPABA    0002                   Cross-Application Component
 *& SAP_BASIS           754         SAPK-75402INSAPBASIS  0002                   SAP Basis Component
-*& SAP_BW              754         SAPK-75402INSAPBW     0002                   SAP Business Warehouse
 *& SAP_GWFND           754         SAPK-75402INSAPGWFND  0002                   SAP Gateway Foundation
 *& SAP_UI              754         SAPK-75404INSAPUI     0004                   User Interface Technology
-*& ST-PI               740         SAPK-74013INSTPI      0013                   SAP Solution Tools Plug-In
-*& UIBAS001            500         SAPK-50002INUIBAS001  0002                   UI for Basis Applications
-
 *&---------------------------------------------------------------------*
+
 REPORT zgw_tools.
 TABLES /iwfnd/i_med_srh.
 
