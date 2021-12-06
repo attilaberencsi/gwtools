@@ -6,7 +6,7 @@ Very plain and simple, and old-school. Designed for copy paste :)
 
 Validated on ABAP 1909.
 
-Software Component  Release     Support Package       Support Package Level  Description
+Software Component / Release / Support Package / Support Package Level  Description
 
 ___
 
@@ -20,4 +20,3 @@ SAP_BASIS           754         SAPK-75402INSAPBASIS  0002                   SAP
 SAP_GWFND           754         SAPK-75402INSAPGWFND  0002                   SAP Gateway Foundation
 
 SAP_UI              754         SAPK-75404INSAPUI     0004                   User Interface Technology
-
