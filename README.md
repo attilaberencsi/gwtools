@@ -1,4 +1,4 @@
-# Gateway Tools for UI5/Fiori
+# Gateway Tools for UI5 / Fiori
 
 Gateway Helper Tools for Fiori Developers, Application Managers to wipe dirty caches.
 
