@@ -2,9 +2,10 @@
 
 Gateway Helper Tools for Fiori Developers, Application Managers.
 
-Very plain and simple, and old-school. Designed for copy paste :)
+Very plain, simple and old-school. Designed for copy paste :) .
 
 Validated on ABAP 1909.
+___
 
 Software Component / Release / Support Package / Support Package Level  Description
 
