@@ -24,13 +24,6 @@ TABLES /iwfnd/i_med_srh.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Selection-screen
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-SELECTION-SCREEN BEGIN OF BLOCK bh WITH FRAME TITLE ht.
-  SELECTION-SCREEN COMMENT /1(79) hl1.
-  SELECTION-SCREEN COMMENT /1(79) hl2.
-  SELECTION-SCREEN COMMENT /1(79) hl3.
-  SELECTION-SCREEN COMMENT /1(79) hl4.
-SELECTION-SCREEN END OF BLOCK bh.
-
 SELECTION-SCREEN BEGIN OF BLOCK bo WITH FRAME TITLE mwt.
   PARAMETERS:
     p_wipesm RADIOBUTTON GROUP ro DEFAULT 'X',
@@ -43,7 +36,27 @@ SELECTION-SCREEN BEGIN OF BLOCK bo WITH FRAME TITLE mwt.
     p_icfact RADIOBUTTON GROUP ro,
     p_icfina RADIOBUTTON GROUP ro,
     p_odui5o AS CHECKBOX.
+
 SELECTION-SCREEN END OF BLOCK bo.
+
+SELECTION-SCREEN BEGIN OF BLOCK bh WITH FRAME TITLE ht.
+  SELECTION-SCREEN COMMENT /1(79) hl1.
+  SELECTION-SCREEN COMMENT /1(79) hl2.
+  SELECTION-SCREEN COMMENT /1(79) hl3.
+  SELECTION-SCREEN BEGIN OF LINE.
+    SELECTION-SCREEN COMMENT 3(4) ico_hey.
+    SELECTION-SCREEN COMMENT 7(73) hl_hey.
+  SELECTION-SCREEN END OF LINE.
+  SELECTION-SCREEN COMMENT /1(79) hl4.
+  SELECTION-SCREEN COMMENT /1(79) hl5.
+  SELECTION-SCREEN COMMENT /1(79) hl6.
+  SELECTION-SCREEN COMMENT /2(78) hl7.
+  SELECTION-SCREEN COMMENT /1(79) hl8.
+  SELECTION-SCREEN BEGIN OF LINE.
+    SELECTION-SCREEN COMMENT 3(4) ico_warn.
+    SELECTION-SCREEN COMMENT 7(73) hl9.
+  SELECTION-SCREEN END OF LINE.
+SELECTION-SCREEN END OF BLOCK bh.
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -67,7 +80,7 @@ CLASS lcl_gw_tool IMPLEMENTATION.
 
   METHOD initialization.
     "Set selection-screen texts
-
+    mwt = 'MAGIC WAND'.
     "Parameters
     %_p_wipesm_%_app_%-text = 'A Wipe Client (SMICM) Cache'. "#EC NOTEXT
     %_p_wipesg_%_app_%-text = 'B Wipe Global (Auth/Nav) Cache'. "#EC NOTEXT
@@ -87,8 +100,15 @@ CLASS lcl_gw_tool IMPLEMENTATION.
     hl2 = 'A - After deploying UI5 App to BSP repository'.
     hl3 = 'B - After adjusting Roles, Catalogs or Groups'.
     hl4 = 'C - After adjusting CDS Annotations or SEGW'.
+    WRITE icon_message_warning_small AS ICON TO ico_hey.
+    hl_hey = 'Select a service and do not kill system performance with *'.
+    hl5 = 'D - Overview on Active SICF services'.
+    hl6 = 'E - After Import to Quality/Production the services are inactive by default.'.
+    hl7 = '    Use this in the target system(Q/P) to discover such services'.
+    hl8 = 'F - You are looking for Fiori(UI5) apps and OData Services only (D/E)'.
+    WRITE icon_message_warning_small AS ICON TO ico_warn.
+    hl9 = 'Service with same name can be found for each UI5 app under /sap/bc/bsp'.
 
-    mwt = 'MAGIC WAND'.
   ENDMETHOD.
 
 
