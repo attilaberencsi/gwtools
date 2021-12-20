@@ -24,7 +24,9 @@ TABLES /iwfnd/i_med_srh.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Selection-screen
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Execution options (Magic Wand)
 SELECTION-SCREEN BEGIN OF BLOCK bo WITH FRAME TITLE mwt.
+
   PARAMETERS:
     p_wipesm RADIOBUTTON GROUP ro DEFAULT 'X',
     p_wipesg RADIOBUTTON GROUP ro,
@@ -39,15 +41,17 @@ SELECTION-SCREEN BEGIN OF BLOCK bo WITH FRAME TITLE mwt.
 
 SELECTION-SCREEN END OF BLOCK bo.
 
+
+" Help texts
 SELECTION-SCREEN BEGIN OF BLOCK bh WITH FRAME TITLE ht.
   SELECTION-SCREEN COMMENT /1(79) hl1.
   SELECTION-SCREEN COMMENT /1(79) hl2.
   SELECTION-SCREEN COMMENT /1(79) hl3.
+  SELECTION-SCREEN COMMENT /1(79) hl4.
   SELECTION-SCREEN BEGIN OF LINE.
     SELECTION-SCREEN COMMENT 3(4) ico_hey.
     SELECTION-SCREEN COMMENT 7(73) hl_hey.
   SELECTION-SCREEN END OF LINE.
-  SELECTION-SCREEN COMMENT /1(79) hl4.
   SELECTION-SCREEN COMMENT /1(79) hl5.
   SELECTION-SCREEN COMMENT /1(79) hl6.
   SELECTION-SCREEN COMMENT /2(78) hl7.
@@ -57,6 +61,14 @@ SELECTION-SCREEN BEGIN OF BLOCK bh WITH FRAME TITLE ht.
     SELECTION-SCREEN COMMENT 7(73) hl9.
   SELECTION-SCREEN END OF LINE.
 SELECTION-SCREEN END OF BLOCK bh.
+
+" Help for browser cache
+SELECTION-SCREEN BEGIN OF BLOCK bbc WITH FRAME TITLE tbc.
+  SELECTION-SCREEN COMMENT /1(79) bc1.
+  SELECTION-SCREEN COMMENT /1(79) bc2.
+  SELECTION-SCREEN COMMENT /1(79) bc3.
+  SELECTION-SCREEN COMMENT /1(79) bc4.
+SELECTION-SCREEN END OF BLOCK bbc.
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -95,19 +107,26 @@ CLASS lcl_gw_tool IMPLEMENTATION.
     %_p_odui5o_%_app_%-text = 'F Filter on Fiori and OData'. "#EC NOTEXT
 
     "Help Text lines
-    ht  = 'Help'.
-    hl1 = 'WHEN TO USE ?'.
-    hl2 = 'A - After deploying UI5 App to BSP repository'.
-    hl3 = 'B - After adjusting Roles, Catalogs or Groups'.
-    hl4 = 'C - After adjusting CDS Annotations or SEGW'.
-    WRITE icon_message_warning_small AS ICON TO ico_hey.
-    hl_hey = 'Select a service and do not kill system performance with *'.
-    hl5 = 'D - Overview on Active SICF services'.
-    hl6 = 'E - After Import to Quality/Production the services are inactive by default.'.
-    hl7 = '    Use this in the target system(Q/P) to discover such services'.
-    hl8 = 'F - You are looking for Fiori(UI5) apps and OData Services only (D/E)'.
+    ht  = 'Help'.                                           "#EC NOTEXT
+    hl1 = 'WHEN TO USE ?'.                                  "#EC NOTEXT
+    hl2 = 'A - After deploying UI5 App to BSP repository'.  "#EC NOTEXT
+    hl3 = 'B - After adjusting Roles, Catalogs or Groups'.  "#EC NOTEXT
+    hl4 = 'C - After adjusting CDS Annotations or SEGW'.    "#EC NOTEXT
+    WRITE icon_message_warning_small AS ICON TO ico_hey.    "#EC NOTEXT
+    hl_hey = 'Select a service and do not kill system performance with *'. "#EC NOTEXT
+    hl5 = 'D - Overview on Active SICF services'.           "#EC NOTEXT
+    hl6 = 'E - After Import to Quality/Production the services are inactive by default.'. "#EC NOTEXT
+    hl7 = '    Use this in the target system(Q/P) to discover such services'. "#EC NOTEXT
+    hl8 = 'F - You are looking for Fiori(UI5) apps and OData Services only (D/E)'. "#EC NOTEXT
     WRITE icon_message_warning_small AS ICON TO ico_warn.
-    hl9 = 'Service with same name can be found for each UI5 app under /sap/bc/bsp'.
+    hl9 = 'Service with same name can be found for each UI5 app under /sap/bc/bsp'. "#EC NOTEXT
+
+    "Help for web browser cache
+    tbc = 'Wipe web browser cache on local computer'.       "#EC NOTEXT
+    bc1 = 'Emptying server cache does not comes with instant results for end users ?'. "#EC NOTEXT
+    bc2 = 'In CHROME launch this site to wipe: chrome://settings/clearBrowserData'. "#EC NOTEXT
+    bc3 = 'In EDGE launch this site to wipe: edge://history/all'. "#EC NOTEXT
+    bc4 = 'In FIREFOX press this key combination to wipe cache: Ctrl+Shift+Del'. "#EC NOTEXT
 
   ENDMETHOD.
 
@@ -148,11 +167,11 @@ CLASS lcl_gw_tool IMPLEMENTATION.
     AND obj_name = '/UI2/INVALIDATE_CLIENT_CACHES'.
 
     IF sy-subrc NE 0.
-      MESSAGE 'Report /UI2/INVALIDATE_CLIENT_CACHES does not exist' TYPE 'I' DISPLAY LIKE 'E'.
+      MESSAGE 'Report /UI2/INVALIDATE_CLIENT_CACHES does not exist' TYPE 'I' DISPLAY LIKE 'E'. "#EC NOTEXT
       RETURN.
     ENDIF.
 
-    SUBMIT /ui2/invalidate_client_caches WITH gv_all = abap_true AND RETURN.
+    SUBMIT /ui2/invalidate_client_caches WITH gv_all = abap_true AND RETURN. "#EC CI_SUBMIT
 
   ENDMETHOD.
 
@@ -164,18 +183,18 @@ CLASS lcl_gw_tool IMPLEMENTATION.
     AND obj_name = '/UI2/INVALIDATE_GLOBAL_CACHES'.
 
     IF sy-subrc NE 0.
-      MESSAGE 'Report /UI2/INVALIDATE_GLOBAL_CACHES does not exist' TYPE 'I' DISPLAY LIKE 'E'.
+      MESSAGE 'Report /UI2/INVALIDATE_GLOBAL_CACHES does not exist' TYPE 'I' DISPLAY LIKE 'E'. "#EC NOTEXT
       RETURN.
     ENDIF.
 
-    SUBMIT /ui2/invalidate_global_caches
+    SUBMIT /ui2/invalidate_global_caches                 "#EC CI_SUBMIT
       WITH gv_test = abap_false
       WITH gv_exe = abap_true AND RETURN.
   ENDMETHOD.
 
   METHOD wipe_odata_meta_cache.
     IF lines(  serv_id ) = 0.
-      MESSAGE 'Please select at least one service' TYPE 'I' DISPLAY LIKE 'E'.
+      MESSAGE 'Please select at least one service' TYPE 'I' DISPLAY LIKE 'E'. "#EC NOTEXT
       RETURN.
     ENDIF.
 
@@ -222,7 +241,7 @@ CLASS lcl_gw_tool IMPLEMENTATION.
     CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
       EXPORTING
         i_structure_name = 'ICF_EXCHG_PUB'
-        i_grid_title     = CONV lvc_title( 'Active Services' )
+        i_grid_title     = CONV lvc_title( 'Active Services' )  "#EC NOTEXT
         is_layout        = VALUE slis_layout_alv( zebra = abap_true colwidth_optimize = abap_true cell_merge = 'N' )
         it_filter        = list_filter
         it_fieldcat      = field_catalog
@@ -254,7 +273,7 @@ CLASS lcl_gw_tool IMPLEMENTATION.
     CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
       EXPORTING
         i_structure_name = 'ICF_EXCHG_PUB'
-        i_grid_title     = CONV lvc_title( 'Inactive Services' )
+        i_grid_title     = CONV lvc_title( 'Inactive Services' )  "#EC NOTEXT
         is_layout        = VALUE slis_layout_alv( zebra = abap_true colwidth_optimize = abap_true cell_merge = 'N' )
         it_filter        = list_filter
         it_fieldcat      = field_catalog
@@ -291,12 +310,12 @@ CLASS lcl_gw_tool IMPLEMENTATION.
           <field_meta>-no_out =  abap_true.
         WHEN 'PATH'.
           <field_meta>-seltext_s = 'Serv/Alias'.
-          <field_meta>-seltext_m = <field_meta>-seltext_l = <field_meta>-reptext_ddic = 'Service/Alias'.
+          <field_meta>-seltext_m = <field_meta>-seltext_l = <field_meta>-reptext_ddic = 'Service/Alias'. "#EC NOTEXT
         WHEN 'REF_PATH'.
           <field_meta>-seltext_s = 'AliasedSrv' .
-          <field_meta>-seltext_m = <field_meta>-seltext_l = <field_meta>-reptext_ddic = 'Aliased Service'.
+          <field_meta>-seltext_m = <field_meta>-seltext_l = <field_meta>-reptext_ddic = 'Aliased Service'. "#EC NOTEXT
         WHEN 'PUBLIC_SERVICE'.
-          <field_meta>-seltext_s = <field_meta>-seltext_m = <field_meta>-seltext_l = <field_meta>-reptext_ddic = 'Public'.
+          <field_meta>-seltext_s = <field_meta>-seltext_m = <field_meta>-seltext_l = <field_meta>-reptext_ddic = 'Public'. "#EC NOTEXT
       ENDCASE.
     ENDLOOP.
   ENDMETHOD.
