@@ -46,3 +46,20 @@ SAP_UI              754         SAPK-75404INSAPUI     0004                   Use
 
 ## Usage
 Check out the detailed description with screenshots at sapdev.eu
+
+Help section guides You to choose the proper action.
+
+A – After deploying from WebIDE Fullstack, Business Application Studio or VSCode to the BSP repository hosting the web application files. Use when the new version of the UI5 application does not appear, because of the new source files are not loaded even after wiping the web browser cache.
+
+B – After You changed PFCG roles, included new target applications in catalogs, adjusted role assignments, but they do not appear on Fiori Launchpad.
+Please also validate manually whether the User Comparison is executed in the target system, where the transport request is imported containing the adjusted PFCG role. This can be also one of the reasons of access problems. The validation and comparison can be done manually in transaction PFCG, or executing a mass report in the target system.
+
+C – This symptom become more in the foreground with metadata driven applications. You perform changes to the OData service, but it is not reflected on the UI. You added annotations to the metadata extension file, or new fields to the consumption view. I would like to mention here that, please do not run this feature with * without a good reason. In such case I would immediately take my chainsaw from my drawer my dear as Your colleague :).
+
+Hint: when using CDS entities as reference model in SEGW projects, the generation of the project might required, which has nothing to do with the cache. In case You enhanced a standard CDS view in such setup, You might faced the issue that a value help annotation will never be part of the OData service, because this would need the regeneration of the SEGW project => standard modification.
+
+D – Becomes a handy function when implementing an SAP system for example. You can use this feature to get a list of active services in the development/quality and production systems and do a comparison to discover discrepancies. You can read here more about mass activation of SICF services.
+
+E – When You activate an OData service in the development system using transaction /IWFND/MAINT_SERVICE or using a task list, the service endpoint is created in ICF and activated. The activation does not automatically happen after importing the transport request in the target system. You can discover such endpoints, and activate them in transaction SICF. The same has to be done for UI5 applications. You can use this feature to discover such services, so that end users are not getting the popup, that the Fiori application cannot be loaded, not available, please contact system administrator etc.
+
+F – This is a tiny feature added to option D and E to put a filter on the ICF service list, to show only OData and UI5 application services (which BTW are doubled under node /sap/bc/bsp in transaction SICF always).
