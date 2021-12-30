@@ -1,12 +1,30 @@
 # Gateway Tools for UI5 / Fiori
 
-Gateway Helper Tools for Fiori Developers, Application Managers to wipe dirty caches.
+## About 
+Gateway Helper Tools for Fiori Developers, Application Managers to speed up recurring DevOps tasks in development and quality/test systems from a central place.
+Very plain, simple and old-school, because it is designed for copy-paste :). 
 
-Very plain, simple and old-school. Designed for copy paste :) .
+### Motivation
+Beeing in this industry for a while, my mind is time to time about how-to simplify admin work of DevOps. 
 
-Installation: pull this repo using ABAPGit or copy-paste report source: zgw_tools.prog.abap into a GW (FES) or S/4HANA System.
+## Features
+- Wipe Client (SMICM) Cache
+- Wipe Global (Auth/Nav) Cache
+- Wipe Metadata Cache - Backend + FrontEnd
+- Show Active SICF Services
+- Show Inactive SICF Services
 
-Validated on ABAP 1909.
+## Installation
+Pull this repo using ABAPGit or copy-paste report source: zgw_tools.prog.abap into a GW (FES) or S/4HANA System.
+Not all developers are able to use ABAPGit behind corporate walls, therefore pnly a single report is to be created only.
+
+
+## Test results
+### ATC
+- Passed
+
+### Functional
+- Validated on ABAP 1909 successfully
 ___
 
 Software Component / Release / Support Package / Support Package Level  Description
