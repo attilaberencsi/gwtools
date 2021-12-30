@@ -5,7 +5,7 @@ Gateway Helper Tools for Fiori Developers, Application Managers and DevOps colle
 Very plain, simple and old-school, because it is designed for copy-paste :). 
 
 ### Motivation
-djust a CDS view / metadata extension, deploy or transport a new version of a UI5 application to the backend, the same activity is to be performed, like wiping caches so that my changes become active. This tool is not meant to be used in productive environment, it is rather to support and speed up the development process in development and quality systems. Wiping specific caches when it is unnecessary , will slow down the performance of the Fiori Launchpad and result in bad user experience. I saw in the past lot of times, that developers, consultants, application managers brute-force wiping all kind of caches to make their changes active without being understanding what they actually wiping, because they do not understand the mechanism behind. Therefore I put a guide on the selection-screen to provide a simple usage guidance, to avoid such situations.
+Being in this industry for a while, my mind is time to time about how-to simplify admin work of DevOps. Every time I adjust a CDS view / metadata extension, deploy or transport a new version of a UI5 application to the backend, the same activity is to be performed, like wiping caches so that my changes become active. This tool is not aimed to be used in productive environment, it is rather to support and speed up the development process in development and quality systems. Wiping specific caches - when it is unnecessary - will slow down the performance of the Fiori Launchpad and result in bad user experience. Brute-force wiping all kind of caches to make changes active without understanding what is being actually wiped is really not a good idea. Have You experienced loading tiles forever already ? To prevent such situations, I put a guide on the selection-screen to provide a simple guidance. I wanted to contribute back to the community, because the  meaningful information I found here helped me a lot during the past years. Now I have some time to give that tool a format and share it with You. I hope it will be a helpful tool for You. 
 
 ## Features
 - Wipe Client (SMICM) Cache
@@ -13,6 +13,8 @@ djust a CDS view / metadata extension, deploy or transport a new version of a UI
 - Wipe Metadata Cache - Backend + FrontEnd
 - Show Active SICF Services
 - Show Inactive SICF Services
+
+All of them are already part of the standard already, but You reach them through multiple steps/clicks and from variety of transactions. The report gives You instant central access to them. I suggest You to look at the source, to get some insight, what was the original standard report or function behind.
 
 ## Installation
 - Pull this repo using ABAPGit **OR** 
