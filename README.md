@@ -18,7 +18,7 @@ djust a CDS view / metadata extension, deploy or transport a new version of a UI
 - Pull this repo using ABAPGit **OR** 
 - copy-paste report source: zgw_tools.prog.abap into a GW (FES) or S/4HANA System. 
 
-Not all developers are able to use ABAPGit behind corporate walls, therefore only a single report **ZGW_TOOLS** is to be created only.
+Not all developers are able to use ABAPGit behind corporate walls, therefore only a single report **ZGW_TOOLS** is to be created in latter option only.
 
 
 ## Test results
@@ -45,4 +45,4 @@ SAP_GWFND           754         SAPK-75402INSAPGWFND  0002                   SAP
 SAP_UI              754         SAPK-75404INSAPUI     0004                   User Interface Technology
 
 ## Usage
-Check out the detailed description at 
+Check out the detailed description with screenshots at sapdev.eu
