@@ -5,7 +5,7 @@ Gateway Helper Tools for Fiori Developers, Application Managers and DevOps colle
 Very plain, simple and old-school, because it is designed for copy-paste :). 
 
 ### Motivation
-Beeing in this industry for a while, my mind is time to time about how-to simplify admin work of DevOps. 
+djust a CDS view / metadata extension, deploy or transport a new version of a UI5 application to the backend, the same activity is to be performed, like wiping caches so that my changes become active. This tool is not meant to be used in productive environment, it is rather to support and speed up the development process in development and quality systems. Wiping specific caches when it is unnecessary , will slow down the performance of the Fiori Launchpad and result in bad user experience. I saw in the past lot of times, that developers, consultants, application managers brute-force wiping all kind of caches to make their changes active without being understanding what they actually wiping, because they do not understand the mechanism behind. Therefore I put a guide on the selection-screen to provide a simple usage guidance, to avoid such situations.
 
 ## Features
 - Wipe Client (SMICM) Cache
