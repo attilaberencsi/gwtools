@@ -1,4 +1,4 @@
-# Gateway Tools for UI5 / Fiori
+# Gateway Tools for UI5 / Fiori and OData
 
 ## About 
 Gateway Helper Tools for Fiori Developers, Application Managers and DevOps colleagues to speed up recurring DevOps tasks in development and quality/test systems from a central place.
@@ -48,6 +48,9 @@ SAP_UI              754         SAPK-75404INSAPUI     0004                   Use
 
 ## Usage
 Check out the detailed description with screenshots at sapdev.eu
+
+https://www.sapdev.eu/gateway-tools-for-ui5-fiori/
+
 
 Help section guides You to choose the proper action.
 
