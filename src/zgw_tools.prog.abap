@@ -29,6 +29,7 @@ SELECTION-SCREEN BEGIN OF BLOCK bo WITH FRAME TITLE mwt.
 
   PARAMETERS:
     p_wipesm RADIOBUTTON GROUP ro DEFAULT 'X',
+    p_unamem TYPE syuname LOWER CASE DEFAULT sy-uname MATCHCODE OBJECT user_comp,
     p_wipesg RADIOBUTTON GROUP ro,
     p_wipeme RADIOBUTTON GROUP ro.
 
@@ -46,6 +47,10 @@ SELECTION-SCREEN END OF BLOCK bo.
 SELECTION-SCREEN BEGIN OF BLOCK bh WITH FRAME TITLE ht.
   SELECTION-SCREEN COMMENT /1(79) hl1.
   SELECTION-SCREEN COMMENT /1(79) hl2.
+  SELECTION-SCREEN BEGIN OF LINE.
+    SELECTION-SCREEN COMMENT 3(4) ico_nono.
+    SELECTION-SCREEN COMMENT 7(73) h21.
+  SELECTION-SCREEN END OF LINE.
   SELECTION-SCREEN COMMENT /1(79) hl3.
   SELECTION-SCREEN COMMENT /1(79) hl4.
   SELECTION-SCREEN BEGIN OF LINE.
@@ -95,6 +100,7 @@ CLASS lcl_gw_tool IMPLEMENTATION.
     mwt = 'MAGIC WAND'.
     "Parameters
     %_p_wipesm_%_app_%-text = 'A Wipe Client (SMICM) Cache'. "#EC NOTEXT
+    %_p_unamem_%_app_%-text = 'For User'.                   "#EC NOTEXT
     %_p_wipesg_%_app_%-text = 'B Wipe Global (Auth/Nav) Cache'. "#EC NOTEXT
     %_p_wipeme_%_app_%-text = 'C Wipe Metadata Cache - BE+FE'. "#EC NOTEXT
 
@@ -110,6 +116,8 @@ CLASS lcl_gw_tool IMPLEMENTATION.
     ht  = 'Help'.                                           "#EC NOTEXT
     hl1 = 'WHEN TO USE ?'.                                  "#EC NOTEXT
     hl2 = 'A - After deploying UI5 App to BSP repository'.  "#EC NOTEXT
+    h21 = 'Clear Your username - which slows down others - when necessary only'. "#EC NOTEXT
+    WRITE icon_message_warning_small AS ICON TO ico_nono.   "#EC NOTEXT
     hl3 = 'B - After adjusting Roles, Catalogs or Groups'.  "#EC NOTEXT
     hl4 = 'C - After adjusting CDS Annotations or SEGW'.    "#EC NOTEXT
     WRITE icon_message_warning_small AS ICON TO ico_hey.    "#EC NOTEXT
@@ -171,7 +179,14 @@ CLASS lcl_gw_tool IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    SUBMIT /ui2/invalidate_client_caches WITH gv_all = abap_true AND RETURN. "#EC CI_SUBMIT
+    IF p_unamem IS INITIAL.
+      SUBMIT /ui2/invalidate_client_caches WITH gv_all = abap_true AND RETURN. "#EC CI_SUBMIT
+    ELSE.
+      SUBMIT /ui2/invalidate_client_caches
+        WITH gv_all = abap_false
+        WITH gv_user = abap_true
+        WITH g_uname = p_unamem AND RETURN.              "#EC CI_SUBMIT
+    ENDIF.
 
   ENDMETHOD.
 
