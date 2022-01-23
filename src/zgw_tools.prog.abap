@@ -246,7 +246,7 @@ CLASS lcl_gw_tool IMPLEMENTATION.
     IF p_odui5o = abap_true."Filter on UI5 and OData services by default
       DATA(list_filter) = VALUE slis_t_filter_alv(
         ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/bc/ui5_ui5/*')
-        ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/bc/opu/*')
+        ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/opu/*')
       ).
     ENDIF.
 
@@ -277,7 +277,7 @@ CLASS lcl_gw_tool IMPLEMENTATION.
     IF p_odui5o = abap_true."Filter on UI5 and OData services by default
       DATA(list_filter) = VALUE slis_t_filter_alv(
         ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/bc/ui5_ui5/*')
-        ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/bc/opu/*')
+        ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/opu/*')
       ).
     ENDIF.
 
