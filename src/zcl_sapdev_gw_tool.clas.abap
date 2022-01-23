@@ -1,4 +1,6 @@
 "! <p class="shorttext synchronized" lang="en">GateWay Tools</p>
+"! <p>Author: <strong>Attila Berencsi, sapdev.eu</strong><p>
+"! <p>Version Info (YYMMDD): <strong>v220123</strong><p>
 CLASS zcl_sapdev_gw_tool DEFINITION
   PUBLIC
   FINAL
@@ -48,13 +50,19 @@ CLASS zcl_sapdev_gw_tool DEFINITION
         RETURNING
           VALUE(r_output)  TYPE list_string_table,
 
-      show_icf_active
+      get_show_icf_active
         IMPORTING
-          i_show_ui5_odata_only TYPE abap_bool OPTIONAL,
+          i_show_ui5_odata_only TYPE abap_bool OPTIONAL
+        EXPORTING
+          e_services            TYPE icf_exchg_pub_ttyp
+          e_output              TYPE list_string_table,
 
-      show_icf_inactive
+      get_show_icf_inactive
         IMPORTING
-          i_show_ui5_odata_only TYPE abap_bool OPTIONAL.
+          i_show_ui5_odata_only TYPE abap_bool OPTIONAL
+        EXPORTING
+          e_services            TYPE icf_exchg_pub_ttyp
+          e_output              TYPE list_string_table.
 
 
   PROTECTED SECTION.
@@ -65,7 +73,16 @@ CLASS zcl_sapdev_gw_tool DEFINITION
         IMPORTING
           i_free          TYPE abap_bool DEFAULT abap_true
         RETURNING
-          VALUE(r_output) TYPE list_string_table.
+          VALUE(r_output) TYPE list_string_table,
+
+      itab_to_csv
+        IMPORTING
+          i_tab        TYPE INDEX TABLE
+          i_separator  TYPE clike DEFAULT ';'
+        RETURNING
+          VALUE(r_csv) TYPE list_string_table.
+
+
 
 
   PRIVATE SECTION.
@@ -192,67 +209,106 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD show_icf_active.
+  METHOD get_show_icf_active.
     cl_icf_service_publication=>get_activate_nodes( IMPORTING it_icf_exchg_pub = DATA(active_services) ).
 
-    IF i_show_ui5_odata_only = abap_true."Filter on UI5 and OData services by default
-      DATA(list_filter) = VALUE slis_t_filter_alv(
-        ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/bc/ui5_ui5/*')
-        ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/bc/opu/*')
-      ).
+    IF me->output_mode = gui_output.
+
+      "Setup and Display List
+      IF i_show_ui5_odata_only = abap_true."Filter on UI5 and OData services by default
+        DATA(list_filter) = VALUE slis_t_filter_alv(
+          ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/bc/ui5_ui5/*')
+          ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/opu/*')
+        ).
+      ENDIF.
+
+      DATA(field_catalog) = build_icfservice_fcat( ).
+
+      CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+        EXPORTING
+          i_structure_name = 'ICF_EXCHG_PUB'
+          i_grid_title     = CONV lvc_title( 'Active Services' )  "#EC NOTEXT
+          is_layout        = VALUE slis_layout_alv( zebra = abap_true colwidth_optimize = abap_true cell_merge = 'N' )
+          it_filter        = list_filter
+          it_fieldcat      = field_catalog
+        TABLES
+          t_outtab         = active_services
+        EXCEPTIONS
+          program_error    = 1
+          OTHERS           = 2.
+      IF sy-subrc <> 0.
+        MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+          WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+      ENDIF.
+
+    ELSE.
+      IF i_show_ui5_odata_only = abap_true."Filter on UI5 and OData services by default
+        LOOP AT active_services TRANSPORTING NO FIELDS WHERE ( path NP '/sap/bc/ui5_ui5/*' AND path NP '/sap/opu/*' ).
+          DELETE active_services.
+        ENDLOOP.
+      ENDIF.
+
+      IF e_services IS REQUESTED.
+        e_services = active_services.
+      ENDIF.
+
+      IF e_output IS REQUESTED.
+        e_output = itab_to_csv( i_tab = active_services ).
+      ENDIF.
+
     ENDIF.
 
-    "Setup and Display List
-    DATA(field_catalog) = build_icfservice_fcat( ).
-
-    CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
-      EXPORTING
-        i_structure_name = 'ICF_EXCHG_PUB'
-        i_grid_title     = CONV lvc_title( 'Active Services' )  "#EC NOTEXT
-        is_layout        = VALUE slis_layout_alv( zebra = abap_true colwidth_optimize = abap_true cell_merge = 'N' )
-        it_filter        = list_filter
-        it_fieldcat      = field_catalog
-      TABLES
-        t_outtab         = active_services
-      EXCEPTIONS
-        program_error    = 1
-        OTHERS           = 2.
-    IF sy-subrc <> 0.
-      MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
-        WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
-    ENDIF.
   ENDMETHOD.
 
-  METHOD show_icf_inactive.
+  METHOD get_show_icf_inactive.
     cl_icf_service_publication=>get_inactive_nodes( IMPORTING et_icf_exchg_pub  = DATA(inactive_services) ).
 
-    IF i_show_ui5_odata_only = abap_true."Filter on UI5 and OData services by default
-      DATA(list_filter) = VALUE slis_t_filter_alv(
-        ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/bc/ui5_ui5/*')
-        ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/bc/opu/*')
-      ).
+    IF me->output_mode = gui_output.
+
+      "Setup and Display List
+      IF i_show_ui5_odata_only = abap_true."Filter on UI5 and OData services by default
+        DATA(list_filter) = VALUE slis_t_filter_alv(
+          ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/bc/ui5_ui5/*')
+          ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/opu/*')
+        ).
+      ENDIF.
+
+      DATA(field_catalog) = build_icfservice_fcat( ).
+
+      CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+        EXPORTING
+          i_structure_name = 'ICF_EXCHG_PUB'
+          i_grid_title     = CONV lvc_title( 'Inactive Services' )  "#EC NOTEXT
+          is_layout        = VALUE slis_layout_alv( zebra = abap_true colwidth_optimize = abap_true cell_merge = 'N' )
+          it_filter        = list_filter
+          it_fieldcat      = field_catalog
+        TABLES
+          t_outtab         = inactive_services
+        EXCEPTIONS
+          program_error    = 1
+          OTHERS           = 2.
+      IF sy-subrc <> 0.
+        MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+          WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+      ENDIF.
+
+    ELSE.
+      IF i_show_ui5_odata_only = abap_true."Filter on UI5 and OData services by default
+        LOOP AT inactive_services TRANSPORTING NO FIELDS WHERE ( path NP '/sap/bc/ui5_ui5/*' AND path NP '/sap/opu/*' ).
+          DELETE inactive_services.
+        ENDLOOP.
+      ENDIF.
+
+      IF e_services IS REQUESTED.
+        e_services = inactive_services.
+      ENDIF.
+
+      IF e_output IS REQUESTED.
+        e_output = itab_to_csv( i_tab = inactive_services ).
+      ENDIF.
+
     ENDIF.
 
-    "Setup and Display List
-    DATA(field_catalog) = build_icfservice_fcat( ).
-
-
-    CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
-      EXPORTING
-        i_structure_name = 'ICF_EXCHG_PUB'
-        i_grid_title     = CONV lvc_title( 'Inactive Services' )  "#EC NOTEXT
-        is_layout        = VALUE slis_layout_alv( zebra = abap_true colwidth_optimize = abap_true cell_merge = 'N' )
-        it_filter        = list_filter
-        it_fieldcat      = field_catalog
-      TABLES
-        t_outtab         = inactive_services
-      EXCEPTIONS
-        program_error    = 1
-        OTHERS           = 2.
-    IF sy-subrc <> 0.
-      MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
-        WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
-    ENDIF.
   ENDMETHOD.
 
   METHOD build_icfservice_fcat.
@@ -315,6 +371,32 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
     IF i_free = abap_true.
       CALL FUNCTION 'LIST_FREE_MEMORY'.
     ENDIF.
+  ENDMETHOD.
+
+  METHOD itab_to_csv.
+    DATA:
+      csv_line TYPE string.
+
+    FIELD-SYMBOLS:
+      <value> TYPE any.
+
+    LOOP AT i_tab ASSIGNING FIELD-SYMBOL(<structure>).
+      CLEAR csv_line.
+
+      DO.
+        ASSIGN COMPONENT sy-index OF STRUCTURE <structure> TO <value>.
+        IF sy-subrc <> 0.
+          EXIT.
+        ENDIF.
+        IF sy-index = 1.
+          csv_line = |{ <value> ALPHA = OUT } |.
+        ELSE.
+          csv_line = |{ csv_line }{ i_separator }{ <value> ALPHA = OUT } |.
+        ENDIF.
+      ENDDO.
+
+      APPEND csv_line TO r_csv.
+    ENDLOOP.
   ENDMETHOD.
 
 ENDCLASS.
