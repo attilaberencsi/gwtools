@@ -7,6 +7,8 @@
 *&---------------------------------------------------------------------*
 *& Author: Attila Berencsi, sapdev.eu
 *& Version Info (YYMMDD): v220123
+*& https://github.com/attilaberencsi/gwtools
+*& Licence: MIT
 *&---------------------------------------------------------------------*
 *& Validated on ABAP 1909.
 *&
@@ -91,44 +93,31 @@ CLASS lcl_gw_tool IMPLEMENTATION.
 
   METHOD initialization.
     "Set selection-screen texts
-    mwt = 'MAGIC WAND'.
-    "Parameters
-    %_p_wipesm_%_app_%-text = 'A Wipe Client (SMICM) Cache'. "#EC NOTEXT
-    %_p_unamem_%_app_%-text = 'For User'.                   "#EC NOTEXT
-    %_p_wipesg_%_app_%-text = 'B Wipe Global (Auth/Nav) Cache'. "#EC NOTEXT
-    %_p_wipeme_%_app_%-text = 'C Wipe Metadata Cache - BE+FE'. "#EC NOTEXT
-
-    "Select-options
-    %_serv_id_%_app_%-text = 'Wipe Metadata of Service(s)'. "#EC NOTEXT
-
-    "Parameters
-    %_p_icfact_%_app_%-text = 'D Show Active SICF Services'. "#EC NOTEXT
-    %_p_icfina_%_app_%-text = 'E Show Inactive SICF Services'. "#EC NOTEXT
-    %_p_odui5o_%_app_%-text = 'F Filter on Fiori and OData'. "#EC NOTEXT
+    mwt = TEXT-mwt.
 
     "Help Text lines
-    ht  = 'Help'.                                           "#EC NOTEXT
-    hl1 = 'WHEN TO USE ?'.                                  "#EC NOTEXT
-    hl2 = 'A - After deploying UI5 App to BSP repository'.  "#EC NOTEXT
-    h21 = 'Clear Your username - which slows down others - when necessary only'. "#EC NOTEXT
-    WRITE icon_message_warning_small AS ICON TO ico_nono.   "#EC NOTEXT
-    hl3 = 'B - After adjusting Roles, Catalogs or Groups'.  "#EC NOTEXT
-    hl4 = 'C - After adjusting CDS Annotations or SEGW'.    "#EC NOTEXT
-    WRITE icon_message_warning_small AS ICON TO ico_hey.    "#EC NOTEXT
-    hl_hey = 'Select a service and do not kill system performance with *'. "#EC NOTEXT
-    hl5 = 'D - Overview on Active SICF services'.           "#EC NOTEXT
-    hl6 = 'E - After Import to Quality/Production the services are inactive by default.'. "#EC NOTEXT
-    hl7 = '    Use this in the target system(Q/P) to discover such services'. "#EC NOTEXT
-    hl8 = 'F - You are looking for Fiori(UI5) apps and OData Services only (D/E)'. "#EC NOTEXT
+    ht  = TEXT-hth.
+    hl1 = TEXT-hl1.
+    hl2 = TEXT-hl2.
+    h21 = TEXT-h21.
+    WRITE icon_message_warning_small AS ICON TO ico_nono.
+    hl3 = TEXT-hl3.
+    hl4 = TEXT-hl4.
+    WRITE icon_message_warning_small AS ICON TO ico_hey.
+    hl_hey = TEXT-hlh.
+    hl5 = TEXT-hl5.
+    hl6 = TEXT-hl6.
+    hl7 = TEXT-hl7.
+    hl8 = TEXT-hl8.
     WRITE icon_message_warning_small AS ICON TO ico_warn.
-    hl9 = 'Service with same name can be found for each UI5 app under /sap/bc/bsp'. "#EC NOTEXT
+    hl9 = TEXT-hl9.
 
     "Help for web browser cache
-    tbc = 'Wipe web browser cache on local computer'.       "#EC NOTEXT
-    bc1 = 'Emptying server cache does not comes with instant results for end users ?'. "#EC NOTEXT
-    bc2 = 'In CHROME launch this site to wipe: chrome://settings/clearBrowserData'. "#EC NOTEXT
-    bc3 = 'In EDGE launch this site to wipe: edge://history/all'. "#EC NOTEXT
-    bc4 = 'In FIREFOX press this key combination to wipe cache: Ctrl+Shift+Del'. "#EC NOTEXT
+    tbc = TEXT-tbc.
+    bc1 = TEXT-bc1.
+    bc2 = TEXT-bc2.
+    bc3 = TEXT-bc3.
+    bc4 = TEXT-bc4.
 
   ENDMETHOD.
 

@@ -16,6 +16,162 @@
      <ENTRY>Gateway Tools</ENTRY>
      <LENGTH>13</LENGTH>
     </item>
+    <item>
+     <ID>I</ID>
+     <KEY>BC1</KEY>
+     <ENTRY>Emptying server cache does not comes with instant results for end users ?</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>BC2</KEY>
+     <ENTRY>In CHROME launch this site to wipe: chrome://settings/clearBrowserData</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>BC3</KEY>
+     <ENTRY>In EDGE launch this site to wipe: edge://history/all</ENTRY>
+     <LENGTH>104</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>BC4</KEY>
+     <ENTRY>In FIREFOX press this key combination to wipe cache: Ctrl+Shift+Del</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>H21</KEY>
+     <ENTRY>Clear Your username - which slows down others - when necessary only</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>HL1</KEY>
+     <ENTRY>WHEN TO USE ?</ENTRY>
+     <LENGTH>23</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>HL2</KEY>
+     <ENTRY>A - After deploying UI5 App to BSP repository</ENTRY>
+     <LENGTH>90</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>HL3</KEY>
+     <ENTRY>B - After adjusting Roles, Catalogs or Groups</ENTRY>
+     <LENGTH>90</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>HL4</KEY>
+     <ENTRY>C - After adjusting CDS Annotations or SEGW</ENTRY>
+     <LENGTH>86</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>HL5</KEY>
+     <ENTRY>D - Overview on Active SICF services</ENTRY>
+     <LENGTH>72</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>HL6</KEY>
+     <ENTRY>E - After Import to Quality/Production the services are inactive by default.</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>HL7</KEY>
+     <ENTRY>    Use this in the target system(Q/P) to discover such services</ENTRY>
+     <LENGTH>128</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>HL8</KEY>
+     <ENTRY>F - You are looking for Fiori(UI5) apps and OData Services only (D/E)</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>HL9</KEY>
+     <ENTRY>Service with same name can be found for each UI5 app under /sap/bc/bsp</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>HLH</KEY>
+     <ENTRY>Select a service and do not kill system performance with *</ENTRY>
+     <LENGTH>116</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>HTH</KEY>
+     <ENTRY>Help</ENTRY>
+     <LENGTH>14</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>MWT</KEY>
+     <ENTRY>MAGIC WAND</ENTRY>
+     <LENGTH>20</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_ICFACT</KEY>
+     <ENTRY>D Show Active SICF Services</ENTRY>
+     <LENGTH>35</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_ICFINA</KEY>
+     <ENTRY>E Show Inactive SICF Services</ENTRY>
+     <LENGTH>37</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_ODUI5O</KEY>
+     <ENTRY>F Filter on Fiori and OData</ENTRY>
+     <LENGTH>35</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_UNAMEM</KEY>
+     <ENTRY>For User</ENTRY>
+     <LENGTH>16</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_WIPEME</KEY>
+     <ENTRY>C Wipe Metadata Cache - BE+FE</ENTRY>
+     <LENGTH>37</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_WIPESG</KEY>
+     <ENTRY>B Wipe Global (Auth/Nav) Cache</ENTRY>
+     <LENGTH>38</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_WIPESM</KEY>
+     <ENTRY>A Wipe Client (SMICM) Cache</ENTRY>
+     <LENGTH>35</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>SERV_ID</KEY>
+     <ENTRY>Wipe Metadata of Service(s)</ENTRY>
+     <LENGTH>35</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>TBC</KEY>
+     <ENTRY>Wipe web browser cache on local computer</ENTRY>
+     <LENGTH>80</LENGTH>
+    </item>
    </TPOOL>
   </asx:values>
  </asx:abap>

@@ -7,6 +7,11 @@
 *& Not MVC, just a local helper implemented for separation of model and
 *& controller function for a given GW Tool feature or ABAP Event Block.
 *&---------------------------------------------------------------------*
+*& Author: Attila Berencsi, sapdev.eu
+*& Version Info (YYMMDD): v220123
+*& https://github.com/attilaberencsi/gwtools
+*& Licence: MIT
+*&---------------------------------------------------------------------*
 *& Validated on ABAP 1909.
 *&
 *& Software Component  Release     Support Package       Support Package Level  Description

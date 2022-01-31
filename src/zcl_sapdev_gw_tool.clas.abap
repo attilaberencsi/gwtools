@@ -1,6 +1,8 @@
 "! <p class="shorttext synchronized" lang="en">GateWay Tools</p>
 "! <p>Author: <strong>Attila Berencsi, sapdev.eu</strong><p>
 "! <p>Version Info (YYMMDD): <strong>v220123</strong><p>
+"! <p>https://github.com/attilaberencsi/gwtools<p>
+"! <p>Licence: MIT<p>
 CLASS zcl_sapdev_gw_tool DEFINITION
   PUBLIC
   FINAL
