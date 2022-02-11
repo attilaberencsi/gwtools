@@ -28,23 +28,26 @@ Not all developers are able to use ABAPGit behind corporate walls, therefore onl
 - Passed
 
 ### Functional
-- Validated on ABAP 1909 successfully
-___
+#### Validated on ABAP 1909 successfully
 
-Software Component / Release / Support Package / Support Package Level  Description
+| Software Component | Release | Support Package      | Support Package Level | Description                 |
+|--------------------|---------|----------------------|-----------------------|-----------------------------|
+| S4FND              | 104     | SAPK-10402INS4FND    | 0002                  | Foundation                  |
+| SAP_ABA            | 75E     | SAPK-75E02INSAPABA   | 0002                  | Cross-Application Component |
+| SAP_BASIS          | 754     | SAPK-75402INSAPBASIS | 0002                  | SAP Basis Component         |
+| SAP_GWFND          | 754     | SAPK-75402INSAPGWFND | 0002                  | SAP Gateway Foundation      |
+| SAP_UI             | 754     | SAPK-75404INSAPUI    | 0004                  | User Interface Technology   |
 
-___
 
+#### Validated on ABAP 750 successfully
 
-S4FND               104         SAPK-10402INS4FND     0002                   Foundation
-
-SAP_ABA             75E         SAPK-75E02INSAPABA    0002                   Cross-Application Component
-
-SAP_BASIS           754         SAPK-75402INSAPBASIS  0002                   SAP Basis Component
-
-SAP_GWFND           754         SAPK-75402INSAPGWFND  0002                   SAP Gateway Foundation
-
-SAP_UI              754         SAPK-75404INSAPUI     0004                   User Interface Technology
+| Software Component | Release | Support Package      | Support Package Level | Description                   |
+|--------------------|---------|----------------------|-----------------------|-------------------------------|
+| SAP_BS_FND         | 748     | SAPK-74816INSAPBSFND | 0016                  | SAP Business Suite Foundation |
+| SAP_ABA            | 750     | SAPK-75020INSAPABA   | 0020                  | Cross-Application Component   |
+| SAP_BASIS          | 750     | SAPK-75020INSAPBASIS | 0020                  | SAP Basis Component           |
+| SAP_GWFND          | 750     | SAPK-75020INSAPGWFND | 0020                  | SAP Gateway Foundation        |
+| SAP_UI             | 754     | SAPK-75405INSAPUI    | 0005                  | User Interface Technology     |
 
 ## Usage
 Check out the detailed description with screenshots at sapdev.eu
