@@ -1,15 +1,14 @@
 "! <p class="shorttext synchronized" lang="en">GateWay Tools</p>
-"! <p>Author: <strong>Attila Berencsi, sapdev.eu</strong><p>
-"! <p>Version Info (YYMMDD): <strong>v220123</strong><p>
-"! <p>https://github.com/attilaberencsi/gwtools<p>
-"! <p>Licence: MIT<p>
+"! <p>Author: <strong>Attila Berencsi, sapdev.eu</strong></p>
+"! <p>Version Info (YYMMDD): <strong>v220211</strong></p>
+"! <p>https://github.com/attilaberencsi/gwtools</p>
+"! <p>Licence: MIT</p>
 CLASS zcl_sapdev_gw_tool DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-    "TYPES ty_output_mode TYPE c LENGTH 10.
 
     TYPES:
       BEGIN OF ty_srv_id_range,
@@ -21,20 +20,20 @@ CLASS zcl_sapdev_gw_tool DEFINITION
 
     TYPES ty_srv_id_ranges TYPE STANDARD TABLE OF ty_srv_id_range.
 
-    TYPES:
-      BEGIN OF ENUM te_output_mode,
-        no_output,
-        gui_output,
-        string_tab,
-      END OF ENUM te_output_mode.
+    CONSTANTS:
+      BEGIN OF gc_output_mode,
+        no_output  TYPE i VALUE 0,
+        gui_output TYPE i VALUE 1,
+        string_tab TYPE i VALUE 2,
+      END OF gc_output_mode.
 
     DATA:
-      output_mode  TYPE te_output_mode READ-ONLY.
+      output_mode  TYPE i READ-ONLY.
 
     METHODS:
       constructor
         IMPORTING
-          i_output_mode TYPE te_output_mode DEFAULT zcl_sapdev_gw_tool=>gui_output,
+          i_output_mode TYPE i DEFAULT gc_output_mode-gui_output,
 
       wipe_client_cache
         IMPORTING
@@ -111,14 +110,14 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
     ENDIF.
 
     IF i_just_for_username IS INITIAL.
-      IF me->output_mode = gui_output.
+      IF me->output_mode = gc_output_mode-gui_output.
         SUBMIT /ui2/invalidate_client_caches WITH gv_all = abap_true AND RETURN. "#EC CI_SUBMIT
       ELSE.
         SUBMIT /ui2/invalidate_client_caches WITH gv_all = abap_true EXPORTING LIST TO MEMORY AND RETURN. "#EC CI_SUBMIT
         r_output = retrieve_list_output( ).
       ENDIF.
     ELSE.
-      IF me->output_mode = gui_output.
+      IF me->output_mode = gc_output_mode-gui_output.
         SUBMIT /ui2/invalidate_client_caches
           WITH gv_all = abap_false
           WITH gv_user = abap_true
@@ -147,7 +146,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    IF me->output_mode = gui_output.
+    IF me->output_mode = gc_output_mode-gui_output.
       SUBMIT /ui2/invalidate_global_caches               "#EC CI_SUBMIT
         WITH gv_test = abap_false
         WITH gv_exe = abap_true AND RETURN.
@@ -183,7 +182,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
       ).
 
       IF error_text IS NOT INITIAL.
-        IF me->output_mode = gui_output.
+        IF me->output_mode = gc_output_mode-gui_output.
           WRITE: / icon_error_protocol AS ICON, service-srv_identifier.
           WRITE: / '  ', error_text.
         ELSE.
@@ -192,7 +191,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
         ENDIF.
         CONTINUE.
       ELSE.
-        IF me->output_mode = gui_output.
+        IF me->output_mode = gc_output_mode-gui_output.
           WRITE: / icon_okay AS ICON, service-srv_identifier.
         ELSE.
           APPEND |Wiped: { service-srv_identifier }| TO r_output.
@@ -202,7 +201,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
     ENDLOOP.
     IF sy-subrc <> 0.
       DATA(no_hits) = '! NO SERVICES FOUND FOR YOUR SELECTION !'.
-      IF me->output_mode = gui_output.
+      IF me->output_mode = gc_output_mode-gui_output.
         WRITE no_hits.
       ELSE.
         APPEND |{ no_hits }| TO r_output.
@@ -214,7 +213,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
   METHOD get_show_icf_active.
     cl_icf_service_publication=>get_activate_nodes( IMPORTING it_icf_exchg_pub = DATA(active_services) ).
 
-    IF me->output_mode = gui_output.
+    IF me->output_mode = gc_output_mode-gui_output.
 
       "Setup and Display List
       IF i_show_ui5_odata_only = abap_true."Filter on UI5 and OData services by default
@@ -265,7 +264,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
   METHOD get_show_icf_inactive.
     cl_icf_service_publication=>get_inactive_nodes( IMPORTING et_icf_exchg_pub  = DATA(inactive_services) ).
 
-    IF me->output_mode = gui_output.
+    IF me->output_mode = gc_output_mode-gui_output.
 
       "Setup and Display List
       IF i_show_ui5_odata_only = abap_true."Filter on UI5 and OData services by default
