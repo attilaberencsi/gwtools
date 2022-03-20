@@ -12,11 +12,6 @@
    </PROGDIR>
    <TPOOL>
     <item>
-     <ID>R</ID>
-     <ENTRY>Gateway Tools</ENTRY>
-     <LENGTH>13</LENGTH>
-    </item>
-    <item>
      <ID>I</ID>
      <KEY>BC1</KEY>
      <ENTRY>Emptying server cache does not comes with instant results for end users ?</ENTRY>
@@ -39,6 +34,24 @@
      <KEY>BC4</KEY>
      <ENTRY>In FIREFOX press this key combination to wipe cache: Ctrl+Shift+Del</ENTRY>
      <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>H10</KEY>
+     <ENTRY>G - After Upgade, Note or Distribution Layer Installation OR failsafe option</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>H11</KEY>
+     <ENTRY>after TR import in target system =&gt; FLP sure fetch changed Fiori app</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>H12</KEY>
+     <ENTRY>Select repo. Kill system performance just when full calculation is needed</ENTRY>
+     <LENGTH>116</LENGTH>
     </item>
     <item>
      <ID>I</ID>
@@ -119,6 +132,17 @@
      <LENGTH>20</LENGTH>
     </item>
     <item>
+     <ID>I</ID>
+     <KEY>TBC</KEY>
+     <ENTRY>Wipe web browser cache on local computer</ENTRY>
+     <LENGTH>80</LENGTH>
+    </item>
+    <item>
+     <ID>R</ID>
+     <ENTRY>Gateway Tools</ENTRY>
+     <LENGTH>13</LENGTH>
+    </item>
+    <item>
      <ID>S</ID>
      <KEY>P_ICFACT</KEY>
      <ENTRY>D Show Active SICF Services</ENTRY>
@@ -132,9 +156,21 @@
     </item>
     <item>
      <ID>S</ID>
+     <KEY>P_INDEX</KEY>
+     <ENTRY>G - Calculate App Index (FLP)</ENTRY>
+     <LENGTH>37</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
      <KEY>P_ODUI5O</KEY>
      <ENTRY>F Filter on Fiori and OData</ENTRY>
      <LENGTH>35</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_REPO</KEY>
+     <ENTRY>SAPUI5 Repository</ENTRY>
+     <LENGTH>25</LENGTH>
     </item>
     <item>
      <ID>S</ID>
@@ -165,12 +201,6 @@
      <KEY>SERV_ID</KEY>
      <ENTRY>Wipe Metadata of Service(s)</ENTRY>
      <LENGTH>35</LENGTH>
-    </item>
-    <item>
-     <ID>I</ID>
-     <KEY>TBC</KEY>
-     <ENTRY>Wipe web browser cache on local computer</ENTRY>
-     <LENGTH>80</LENGTH>
     </item>
    </TPOOL>
   </asx:values>

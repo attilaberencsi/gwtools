@@ -20,17 +20,6 @@
 *& SAP_GWFND           754         SAPK-75402INSAPGWFND  0002                   SAP Gateway Foundation
 *& SAP_UI              754         SAPK-75404INSAPUI     0004                   User Interface Technology
 *&---------------------------------------------------------------------*
-*&---------------------------------------------------------------------*
-*& Validated on ABAP 750.
-*&
-*& Software Component  Release     Support Package       Support Package Level  Description
-*& ========================================================================================================
-*& SAP_BS_FND          748         SAPK-74816INSAPBSFND  0016                   SAP Business Suite Foundation
-*& SAP_ABA             750         SAPK-75020INSAPABA    0020                   Cross-Application Component
-*& SAP_BASIS           750         SAPK-75020INSAPBASIS  0020                   SAP Basis Component
-*& SAP_GWFND           750         SAPK-75020INSAPGWFND  0020                   SAP Gateway Foundation
-*& SAP_UI              754         SAPK-75405INSAPUI     0005                   User Interface Technology
-*&---------------------------------------------------------------------*
 
 REPORT zgw_tools_oo.
 TABLES /iwfnd/i_med_srh.
@@ -52,7 +41,9 @@ SELECTION-SCREEN BEGIN OF BLOCK bo WITH FRAME TITLE mwt.
   PARAMETERS:
     p_icfact RADIOBUTTON GROUP ro,
     p_icfina RADIOBUTTON GROUP ro,
-    p_odui5o AS CHECKBOX.
+    p_odui5o AS CHECKBOX,
+    p_index  RADIOBUTTON GROUP ro,
+    p_repo   TYPE /ui5/ui5_repository_ui.
 
 SELECTION-SCREEN END OF BLOCK bo.
 
@@ -78,6 +69,12 @@ SELECTION-SCREEN BEGIN OF BLOCK bh WITH FRAME TITLE ht.
   SELECTION-SCREEN BEGIN OF LINE.
     SELECTION-SCREEN COMMENT 3(4) ico_warn.
     SELECTION-SCREEN COMMENT 7(73) hl9.
+  SELECTION-SCREEN END OF LINE.
+  SELECTION-SCREEN COMMENT /1(79) h10.
+  SELECTION-SCREEN COMMENT /3(77) h11.
+  SELECTION-SCREEN BEGIN OF LINE.
+    SELECTION-SCREEN COMMENT 3(4) ico_men.
+    SELECTION-SCREEN COMMENT 7(73) hl_men.
   SELECTION-SCREEN END OF LINE.
 SELECTION-SCREEN END OF BLOCK bh.
 
@@ -122,6 +119,10 @@ CLASS lcl_gw_tool IMPLEMENTATION.
     hl8 = TEXT-hl8.
     WRITE icon_message_warning_small AS ICON TO ico_warn.
     hl9 = TEXT-hl9.
+    h10 = TEXT-h10.
+    h11 = TEXT-h11.
+    WRITE icon_message_warning_small AS ICON TO ico_men.
+    hl_men = TEXT-h12.
 
     "Help for web browser cache
     tbc = TEXT-tbc.
@@ -133,8 +134,7 @@ CLASS lcl_gw_tool IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD main.
-
-    DATA(gw_tool) =  NEW zcl_sapdev_gw_tool( zcl_sapdev_gw_tool=>gc_output_mode-gui_output ).
+    DATA(gw_tool) =  NEW zcl_sapdev_gw_tool( i_output_mode = zcl_sapdev_gw_tool=>gui_output ).
 
     CASE abap_true.
 
@@ -157,6 +157,10 @@ CLASS lcl_gw_tool IMPLEMENTATION.
         "SHOW INACTIVE SERVICES
       WHEN p_icfina.
         gw_tool->get_show_icf_inactive( i_show_ui5_odata_only = p_odui5o ).
+
+        "Calculate UI5 Application Index
+      WHEN p_index.
+        gw_tool->calc_app_index( i_repo = p_repo ).
 
     ENDCASE.
 

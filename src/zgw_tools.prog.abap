@@ -22,17 +22,6 @@
 *& SAP_GWFND           754         SAPK-75402INSAPGWFND  0002                   SAP Gateway Foundation
 *& SAP_UI              754         SAPK-75404INSAPUI     0004                   User Interface Technology
 *&---------------------------------------------------------------------*
-*&---------------------------------------------------------------------*
-*& Validated on ABAP 750.
-*&
-*& Software Component  Release     Support Package       Support Package Level  Description
-*& ========================================================================================================
-*& SAP_BS_FND          748         SAPK-74816INSAPBSFND  0016                   SAP Business Suite Foundation
-*& SAP_ABA             750         SAPK-75020INSAPABA    0020                   Cross-Application Component
-*& SAP_BASIS           750         SAPK-75020INSAPBASIS  0020                   SAP Basis Component
-*& SAP_GWFND           750         SAPK-75020INSAPGWFND  0020                   SAP Gateway Foundation
-*& SAP_UI              754         SAPK-75405INSAPUI     0005                   User Interface Technology
-*&---------------------------------------------------------------------*
 
 REPORT zgw_tools.
 TABLES /iwfnd/i_med_srh.
