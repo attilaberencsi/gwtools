@@ -134,7 +134,7 @@ CLASS lcl_gw_tool IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD main.
-    DATA(gw_tool) =  NEW zcl_sapdev_gw_tool( i_output_mode = zcl_sapdev_gw_tool=>gui_output ).
+    DATA(gw_tool) =  NEW zcl_sapdev_gw_tool( i_output_mode = zcl_sapdev_gw_tool=>gc_output_mode-gui_output ).
 
     CASE abap_true.
 
