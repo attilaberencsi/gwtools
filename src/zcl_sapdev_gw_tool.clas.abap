@@ -9,7 +9,6 @@ CLASS zcl_sapdev_gw_tool DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-    "TYPES ty_output_mode TYPE c LENGTH 10.
 
     TYPES:
       BEGIN OF ty_srv_id_range,
@@ -26,7 +25,7 @@ CLASS zcl_sapdev_gw_tool DEFINITION
 
     CONSTANTS:
       BEGIN OF gc_output_mode,
-        no_output  TYPE ty_output_mode VALUE 0,
+        no_output  TYPE ty_output_mode VALUE 0, "Not yet supported
         gui_output TYPE ty_output_mode VALUE 1,
         string_tab TYPE ty_output_mode VALUE 2,
       END OF gc_output_mode.
@@ -35,6 +34,9 @@ CLASS zcl_sapdev_gw_tool DEFINITION
       output_mode TYPE ty_output_mode READ-ONLY.
 
     METHODS:
+      "! <p class="shorttext synchronized" lang="en">Setup</p>
+      "!
+      "! @parameter i_output_mode | <p class="shorttext synchronized" lang="en">Output mode (GUI/string_table)</p>
       constructor
         IMPORTING
           i_output_mode TYPE ty_output_mode DEFAULT zcl_sapdev_gw_tool=>gc_output_mode-gui_output,
@@ -54,6 +56,13 @@ CLASS zcl_sapdev_gw_tool DEFINITION
           i_service_ranges TYPE zcl_sapdev_gw_tool=>ty_srv_id_ranges
         RETURNING
           VALUE(r_output)  TYPE list_string_table,
+
+      "! <p class="shorttext synchronized" lang="en">Invalidate all $metadata+annotation cache tokens-all clients</p>
+      "!
+      "! @parameter r_output | <p class="shorttext synchronized" lang="en">Log</p>
+      wipe_odata_meta_cache_token
+        RETURNING
+          VALUE(r_output) TYPE list_string_table,
 
       calc_app_index
         IMPORTING
@@ -146,6 +155,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD wipe_global_cache.
+
     "Do we have this ?
     SELECT SINGLE @abap_true FROM tadir INTO @DATA(exists)
       WHERE pgmid = 'R3TR'
@@ -172,9 +182,11 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
 
       r_output = retrieve_list_output( ).
     ENDIF.
+
   ENDMETHOD.
 
   METHOD wipe_odata_meta_cache.
+
     IF lines(  i_service_ranges ) = 0.
       IF me->output_mode = gc_output_mode-gui_output.
         MESSAGE 'Please select at least one service' TYPE 'I' DISPLAY LIKE 'E'. "#EC NOTEXT
@@ -218,6 +230,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
       ENDIF.
 
     ENDLOOP.
+
     IF sy-subrc <> 0.
       DATA(no_hits) = '! NO SERVICES FOUND FOR YOUR SELECTION !'.
       IF me->output_mode = gc_output_mode-gui_output.
@@ -230,6 +243,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_show_icf_active.
+
     cl_icf_service_publication=>get_activate_nodes( IMPORTING it_icf_exchg_pub = DATA(active_services) ).
 
     IF me->output_mode = gc_output_mode-gui_output.
@@ -275,7 +289,6 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
       IF e_output IS REQUESTED.
         e_output = itab_to_csv( i_tab = active_services ).
       ENDIF.
-
     ENDIF.
 
   ENDMETHOD.
@@ -326,12 +339,12 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
       IF e_output IS REQUESTED.
         e_output = itab_to_csv( i_tab = inactive_services ).
       ENDIF.
-
     ENDIF.
 
   ENDMETHOD.
 
   METHOD build_icfservice_fcat.
+
     CALL FUNCTION 'REUSE_ALV_FIELDCATALOG_MERGE'
       EXPORTING
         i_program_name         = sy-cprog
@@ -361,11 +374,13 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
           <field_meta>-seltext_s = <field_meta>-seltext_m = <field_meta>-seltext_l = <field_meta>-reptext_ddic = 'Public'. "#EC NOTEXT
       ENDCASE.
     ENDLOOP.
+
   ENDMETHOD.
 
   METHOD retrieve_list_output.
+
     DATA:
-       listobject  TYPE STANDARD TABLE OF abaplist.
+      listobject  TYPE STANDARD TABLE OF abaplist.
 
     CALL FUNCTION 'LIST_FROM_MEMORY'
       TABLES
@@ -395,6 +410,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
     IF i_free = abap_true.
       CALL FUNCTION 'LIST_FREE_MEMORY'.
     ENDIF.
+
   ENDMETHOD.
 
   METHOD itab_to_csv.
@@ -421,9 +437,11 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
 
       APPEND csv_line TO r_csv.
     ENDLOOP.
+
   ENDMETHOD.
 
   METHOD calc_app_index.
+
     "Do we have this ?
     SELECT SINGLE @abap_true FROM tadir INTO @DATA(exists)
       WHERE pgmid = 'R3TR'
@@ -454,7 +472,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
       IF i_repo IS INITIAL.
         SUBMIT /ui5/app_index_calculate                  "#EC CI_SUBMIT
           WITH p_all_a = abap_true
-          WITH p_all_d = abap_false AND RETURN.
+          WITH p_all_d = abap_false EXPORTING LIST TO MEMORY AND RETURN.
       ELSE.
         SUBMIT /ui5/app_index_calculate                  "#EC CI_SUBMIT
           WITH p_all = abap_false
@@ -464,6 +482,58 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
 
       r_output = retrieve_list_output( ).
     ENDIF.
+
+  ENDMETHOD.
+
+  METHOD wipe_odata_meta_cache_token.
+
+    "This method is the adjusted copy of report /ui5/del_odata_metadata_cache
+    "without the final message statement, which would dump in HTTP Plugin Mode.
+    "Omitting the naming conventions is on purpose, because tracking the changes of
+    "the standard is more easier.
+
+    TRY.
+        IF sy-batch <> abap_true.
+          AUTHORITY-CHECK OBJECT 'S_SUISUPRT'
+                       ID 'ACTVT' FIELD '02'
+                       ID 'SUI_AREA' FIELD 'UI5'.
+          IF sy-subrc <> 0.
+            AUTHORITY-CHECK OBJECT 'S_DEVELOP'
+                      ID 'DEVCLASS' DUMMY
+                      ID 'OBJTYPE' DUMMY
+                      ID 'OBJNAME' DUMMY
+                      ID 'P_GROUP' DUMMY
+                      ID 'ACTVT' FIELD '02'.
+            IF sy-subrc <> 0.
+              MESSAGE i001(/ui5/check_appidx).
+*   Missing authority to change application index or metadata cache
+              RETURN.
+            ENDIF.
+          ENDIF.
+        ENDIF.
+
+        DATA: lo_app_index TYPE REF TO /ui5/cl_ui5_app_index.
+
+        lo_app_index ?= /ui5/cl_ui5_app_api_factory=>get_app_index_instance( ).
+
+        lo_app_index->invalidate_backend_contexts( ).
+
+* SAPDEV: Custom Code - BEGIN
+        IF me->output_mode = gc_output_mode-gui_output.
+          MESSAGE 'Backend context tokens have been invalidated successfully' TYPE 'S'. "#EC NOTEXT
+        ELSE.
+          APPEND |Backend context tokens have been invalidated successfully| TO r_output. "#EC NOTEXT
+        ENDIF.
+
+      CATCH cx_root INTO DATA(ex_root).
+        IF me->output_mode = gc_output_mode-gui_output.
+          MESSAGE ex_root->get_text( ) TYPE 'I' DISPLAY LIKE 'E'. "#EC NOTEXT
+        ELSE.
+          APPEND ex_root->get_text( ) TO r_output.          "#EC NOTEXT
+        ENDIF.
+    ENDTRY.
+* SAPDEV: Custom Code - END
+
   ENDMETHOD.
 
 ENDCLASS.

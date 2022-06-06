@@ -43,7 +43,8 @@ SELECTION-SCREEN BEGIN OF BLOCK bo WITH FRAME TITLE mwt.
     p_icfina RADIOBUTTON GROUP ro,
     p_odui5o AS CHECKBOX,
     p_index  RADIOBUTTON GROUP ro,
-    p_repo   TYPE /ui5/ui5_repository_ui.
+    p_repo   TYPE /ui5/ui5_repository_ui,
+    p_idxbck RADIOBUTTON GROUP ro.
 
 SELECTION-SCREEN END OF BLOCK bo.
 
@@ -76,6 +77,9 @@ SELECTION-SCREEN BEGIN OF BLOCK bh WITH FRAME TITLE ht.
     SELECTION-SCREEN COMMENT 3(4) ico_men.
     SELECTION-SCREEN COMMENT 7(73) hl_men.
   SELECTION-SCREEN END OF LINE.
+  SELECTION-SCREEN COMMENT /1(79) hl_bctx1.
+  SELECTION-SCREEN COMMENT /3(79) hl_bctx2.
+
 SELECTION-SCREEN END OF BLOCK bh.
 
 " Help for browser cache
@@ -124,6 +128,9 @@ CLASS lcl_gw_tool IMPLEMENTATION.
     WRITE icon_message_warning_small AS ICON TO ico_men.
     hl_men = TEXT-h12.
 
+    hl_bctx1 = TEXT-hbc.
+    hl_bctx2 = TEXT-hb2.
+
     "Help for web browser cache
     tbc = TEXT-tbc.
     bc1 = TEXT-bc1.
@@ -161,6 +168,10 @@ CLASS lcl_gw_tool IMPLEMENTATION.
         "Calculate UI5 Application Index
       WHEN p_index.
         gw_tool->calc_app_index( i_repo = p_repo ).
+
+        "UI5 Application Index of Backend Context (aka metadata + annotations) Tokens
+      WHEN p_idxbck.
+        gw_tool->wipe_odata_meta_cache_token( ).
 
     ENDCASE.
 

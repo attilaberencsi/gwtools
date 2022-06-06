@@ -61,6 +61,18 @@
     </item>
     <item>
      <ID>I</ID>
+     <KEY>HB2</KEY>
+     <ENTRY>1-48 hours usually.Use 2 get instant results in DEV System,clearing cachetokens</ENTRY>
+     <LENGTH>79</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>HBC</KEY>
+     <ENTRY>H -New metadata/annotation might not recognized by FLP instantly.Auto Update is</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
      <KEY>HL1</KEY>
      <ENTRY>WHEN TO USE ?</ENTRY>
      <LENGTH>23</LENGTH>
@@ -153,6 +165,12 @@
      <KEY>P_ICFINA</KEY>
      <ENTRY>E Show Inactive SICF Services</ENTRY>
      <LENGTH>37</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_IDXBCK</KEY>
+     <ENTRY>H - Wipe metadata+anno. tokens</ENTRY>
+     <LENGTH>38</LENGTH>
     </item>
     <item>
      <ID>S</ID>
