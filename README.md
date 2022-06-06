@@ -79,6 +79,14 @@ E – When You activate an OData service in the development system using transac
 
 F – This is a tiny feature added to option D and E to put a filter on the ICF service list, to show only OData and UI5 application services (which BTW are doubled under node /sap/bc/bsp in transaction SICF always).
 
+G - FLP Cache for UI5/Fiori application sources is called Application Index. This should be automatic when importing a transport request, or when deploying app to the backend. Use as failsafe option using the Fiori Launchpad, when You recognize, that Your changed JS code is not appearing in the browser, even when wiping the browser cache. Also useful, when You import an OSS Note containing Fiori application fixes, patching UI5 library or upgrading to a higher SP or FPS of S4.
+
+Official SAP Documentation:
+
+*You use this report to calculate the SAPUI5 application index. The report has to be executed in every system whenever the content of the SAPUI5 ABAP repository has changed.*
+
+*The application index contains cache busting information on the level of single and multiple application resources. It also contains certain properties or attributes (for example, component ID, used library, or dependencies) stored in the descriptor for apps, components, and libraries. You can also use this report to directly display index-related application logs which are persisted in the main client of the system (application log object /UI5/APPIDX; logs are created for the sub-objects GENERAL, UI5COMP, and UI5REP).*
+
 H - FLP not only use tokenized/timestamped cache for UI5 application sources, but for OData as well. Metadata and annotations however live a separate lifecycle, their tokens are called Backend Context of the Application Index.
 
 The report **/ui5/upd_odata_metadata_cache** should be scheduled to run at every 1-48 hours (1 is recommended). This results picking up new OData service fields/annotations for example after You adjust a service. But being in a development system, waiting even a single hour is not acceptable. This option executes the report **/ui5/del_odata_metadata_cache** in the background, which does not update but wipes all tokens of OData caches. The update report needs more authorization also in the backend systems, but the delete report not. Use it in development (top most in Test) system only.
