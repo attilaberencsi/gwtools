@@ -78,3 +78,13 @@ D – Becomes a handy function when implementing an SAP system for example. You 
 E – When You activate an OData service in the development system using transaction /IWFND/MAINT_SERVICE or using a task list, the service endpoint is created in ICF and activated. The activation does not automatically happen after importing the transport request in the target system. You can discover such endpoints, and activate them in transaction SICF. The same has to be done for UI5 applications. You can use this feature to discover such services, so that end users are not getting the popup, that the Fiori application cannot be loaded, not available, please contact system administrator etc.
 
 F – This is a tiny feature added to option D and E to put a filter on the ICF service list, to show only OData and UI5 application services (which BTW are doubled under node /sap/bc/bsp in transaction SICF always).
+
+H - FLP not only use tokenized/timestamped cache for UI5 application sources, but for OData as well. Metadata and annotations however live a separate lifecycle, their tokens are called Backend Context of the Application Index.
+
+The report **/ui5/upd_odata_metadata_cache** should be scheduled to run at every 1-48 hours (1 is recommended). This results picking up new OData service fields/annotations for example after You adjust a service. But being in a development system, waiting even a single hour is not acceptable. This option executes the report **/ui5/del_odata_metadata_cache** in the background, which does not update but wipes all tokens of OData caches. The update report needs more authorization also in the backend systems, but the delete report not. Use it in development (top most in Test) system only.
+
+Official SAP documentation is as follows - Update report:
+
+*To ensure fast loading times for SAP Fiori apps started from the launchpad, OData metadata (metadata and annotations documents) of SAP Fiori apps is cached on the web browser. The SAP Fiori front-end server manages and persists cache buster tokens to cache OData metadata. During the startup of the launchpad, the tokens are provided to the client to use the correct representation from the underlying web caches*
+
+*Note: To ensure the cache buster tokens are up-to-date, you have to execute report /UI5/UPD_ODATA_METADATA_CACHE periodically. We recommend an hourly execution interval.*
