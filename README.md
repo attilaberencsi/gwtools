@@ -19,7 +19,9 @@ Note: Wiping specific caches – when it is unnecessary – will slow down the p
 - Wipe Metadata Cache - Backend + FrontEnd
 - Show Active SICF Services
 - Show Inactive SICF Services
-- Calculate App Index (Apps running in FLP)
+- Calculate Application Index - App Sources: Cache validity of App sources running in the browser / FLP
+- Wipe Application Index - Backend Context: aka OData Metadata/Annotation token cache for browsers / FLP
+
 
 All of them are already part of the standard already, but You reach them through multiple steps/clicks and from variety of transactions. The report gives You instant central access to them. I suggest You to look at the source, to get some insight, what was the original standard report or function behind.
 
