@@ -145,32 +145,27 @@ CLASS lcl_gw_tool IMPLEMENTATION.
 
     CASE abap_true.
 
-        "WIPE CLIENT CACHES
       WHEN p_wipesm.
         gw_tool->wipe_client_cache(  ).
 
-        "WIPE GLOBAL CACHES
       WHEN p_wipesg.
         gw_tool->wipe_global_cache( ).
 
-        "WIPE METADATA CACHE
       WHEN p_wipeme.
         gw_tool->wipe_odata_meta_cache( i_service_ranges = serv_id[] ).
 
-        "SHOW ACTIVE SERVICES
       WHEN p_icfact.
         gw_tool->get_show_icf_active( i_show_ui5_odata_only = p_odui5o ).
 
-        "SHOW INACTIVE SERVICES
       WHEN p_icfina.
         gw_tool->get_show_icf_inactive( i_show_ui5_odata_only = p_odui5o ).
 
-        "Calculate UI5 Application Index
       WHEN p_index.
+        "Calculate UI5 Application Index
         gw_tool->calc_app_index( i_repo = p_repo ).
 
-        "UI5 Application Index of Backend Context (aka metadata + annotations) Tokens
       WHEN p_idxbck.
+        "UI5 Application Index of Backend Context (aka metadata + annotations) Tokens
         gw_tool->wipe_odata_meta_cache_token( ).
 
     ENDCASE.
@@ -179,17 +174,9 @@ CLASS lcl_gw_tool IMPLEMENTATION.
 
 ENDCLASS.
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Setup
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 INITIALIZATION.
   lcl_gw_tool=>initialization( ).
-
-
-  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  " Main execution
-  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 START-OF-SELECTION.
   lcl_gw_tool=>main( ).
