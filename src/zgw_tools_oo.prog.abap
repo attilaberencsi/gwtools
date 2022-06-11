@@ -5,8 +5,7 @@
 *&---------------------------------------------------------------------*
 *& Handy for Developers, DevOps Colleagues & Application Managers.
 *&---------------------------------------------------------------------*
-*& Author: Attila Berencsi, sapdev.eu
-*& Version Info (YYMMDD): v220123
+*& Version Info (YYMMDD): v220611
 *& https://github.com/attilaberencsi/gwtools
 *& Licence: MIT
 *&---------------------------------------------------------------------*
@@ -96,8 +95,8 @@ SELECTION-SCREEN END OF BLOCK bbc.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 CLASS lcl_gw_tool DEFINITION.
   PUBLIC SECTION.
-    CLASS-METHODS: initialization,
-      main.
+    CLASS-METHODS initialization.
+    CLASS-METHODS main.
 
 ENDCLASS.
 

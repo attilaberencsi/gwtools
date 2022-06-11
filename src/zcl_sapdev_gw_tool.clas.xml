@@ -11,18 +11,62 @@
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
    </VSEOCLASS>
+   <TPOOL>
+    <item>
+     <ID>I</ID>
+     <KEY>001</KEY>
+     <ENTRY>Report /UI2/INVALIDATE_CLIENT_CACHES does not exist</ENTRY>
+     <LENGTH>102</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>002</KEY>
+     <ENTRY>Report /UI2/INVALIDATE_GLOBAL_CACHES does not exist</ENTRY>
+     <LENGTH>102</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>003</KEY>
+     <ENTRY>Please select at least one service</ENTRY>
+     <LENGTH>68</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>004</KEY>
+     <ENTRY>Service/Alias</ENTRY>
+     <LENGTH>23</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>005</KEY>
+     <ENTRY>Aliased Service</ENTRY>
+     <LENGTH>25</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>006</KEY>
+     <ENTRY>Public</ENTRY>
+     <LENGTH>16</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>007</KEY>
+     <ENTRY>Report /UI5/APP_INDEX_CALCULATE does not exist</ENTRY>
+     <LENGTH>92</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>008</KEY>
+     <ENTRY>Backend context tokens have been invalidated successfully</ENTRY>
+     <LENGTH>114</LENGTH>
+    </item>
+   </TPOOL>
    <DESCRIPTIONS>
     <SEOCOMPOTX>
      <CLSNAME>ZCL_SAPDEV_GW_TOOL</CLSNAME>
      <CMPNAME>CONSTRUCTOR</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Setup</DESCRIPT>
-    </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_SAPDEV_GW_TOOL</CLSNAME>
-     <CMPNAME>WIPE_ODATA_META_CACHE_TOKEN</CMPNAME>
-     <LANGU>E</LANGU>
-     <DESCRIPT>Invalidate all $metadata+annotation cache tokens-all clients</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
   </asx:values>

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_INTF" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOINTERF>
+    <CLSNAME>ZIF_SAPDEV_GW_TOOL</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>GateWay Tools</DESCRIPT>
+    <EXPOSURE>2</EXPOSURE>
+    <STATE>1</STATE>
+    <UNICODE>X</UNICODE>
+   </VSEOINTERF>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_SAPDEV_GW_TOOL</CLSNAME>
+     <CMPNAME>CALC_APP_INDEX</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Calculation of SAPUI5 Application Index</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_SAPDEV_GW_TOOL</CLSNAME>
+     <CMPNAME>GET_SHOW_ICF_ACTIVE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Show active ICF services</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_SAPDEV_GW_TOOL</CLSNAME>
+     <CMPNAME>GET_SHOW_ICF_INACTIVE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Show active ICF services</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_SAPDEV_GW_TOOL</CLSNAME>
+     <CMPNAME>WIPE_CLIENT_CACHE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Submit report /UI2/INVALIDATE_CLIENT_CACHES</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_SAPDEV_GW_TOOL</CLSNAME>
+     <CMPNAME>WIPE_GLOBAL_CACHE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>/UI2/INVALIDATE_GLOBAL_CACHES</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_SAPDEV_GW_TOOL</CLSNAME>
+     <CMPNAME>WIPE_ODATA_META_CACHE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Triggers Cleanup for MetaData Cache</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_SAPDEV_GW_TOOL</CLSNAME>
+     <CMPNAME>WIPE_ODATA_META_CACHE_TOKEN</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Invalidate all $metadata+annotation cache tokens-all clients</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

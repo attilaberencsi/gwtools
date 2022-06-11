@@ -1,6 +1,5 @@
 "! <p class="shorttext synchronized" lang="en">GateWay Tools</p>
-"! <p>Author: <strong>Attila Berencsi, sapdev.eu</strong><p>
-"! <p>Version Info (YYMMDD): <strong>v220123</strong><p>
+"! <p>Version Info (YYMMDD): <strong>v220611</strong><p>
 "! <p>https://github.com/attilaberencsi/gwtools<p>
 "! <p>Licence: MIT<p>
 CLASS zcl_sapdev_gw_tool DEFINITION
@@ -10,102 +9,47 @@ CLASS zcl_sapdev_gw_tool DEFINITION
 
   PUBLIC SECTION.
 
-    TYPES:
-      BEGIN OF ty_srv_id_range,
-        sign   TYPE c LENGTH 1,
-        option TYPE c LENGTH 2,
-        low    TYPE /iwfnd/med_mdl_srg_identifier,
-        high   TYPE /iwfnd/med_mdl_srg_identifier,
-      END OF ty_srv_id_range.
+    INTERFACES zif_sapdev_gw_tool.
+    ALIASES: wipe_client_cache FOR zif_sapdev_gw_tool~wipe_client_cache.
+    ALIASES: wipe_global_cache FOR zif_sapdev_gw_tool~wipe_global_cache.
+    ALIASES: wipe_odata_meta_cache FOR zif_sapdev_gw_tool~wipe_odata_meta_cache.
+    ALIASES: wipe_odata_meta_cache_token FOR zif_sapdev_gw_tool~wipe_odata_meta_cache_token.
+    ALIASES: calc_app_index FOR zif_sapdev_gw_tool~calc_app_index.
+    ALIASES: get_show_icf_active FOR zif_sapdev_gw_tool~get_show_icf_active.
+    ALIASES: get_show_icf_inactive FOR zif_sapdev_gw_tool~get_show_icf_inactive.
 
-    TYPES ty_srv_id_ranges TYPE STANDARD TABLE OF ty_srv_id_range.
-
-    TYPES:
-      ty_output_mode TYPE i.
-
-    CONSTANTS:
-      BEGIN OF gc_output_mode,
-        no_output  TYPE ty_output_mode VALUE 0, "Not yet supported
-        gui_output TYPE ty_output_mode VALUE 1,
-        string_tab TYPE ty_output_mode VALUE 2,
-      END OF gc_output_mode.
+    ALIASES gc_output_mode FOR zif_sapdev_gw_tool~gc_output_mode.
 
     DATA:
-      output_mode TYPE ty_output_mode READ-ONLY.
+      output_mode TYPE zif_sapdev_gw_tool=>ty_output_mode READ-ONLY.
 
-    METHODS:
-      "! <p class="shorttext synchronized" lang="en">Setup</p>
-      "!
-      "! @parameter i_output_mode | <p class="shorttext synchronized" lang="en">Output mode (GUI/string_table)</p>
-      constructor
-        IMPORTING
-          i_output_mode TYPE ty_output_mode DEFAULT zcl_sapdev_gw_tool=>gc_output_mode-gui_output,
-
-      wipe_client_cache
-        IMPORTING
-          i_just_for_username TYPE syuname OPTIONAL
-        RETURNING
-          VALUE(r_output)     TYPE list_string_table,
-
-      wipe_global_cache
-        RETURNING
-          VALUE(r_output) TYPE list_string_table,
-
-      wipe_odata_meta_cache
-        IMPORTING
-          i_service_ranges TYPE zcl_sapdev_gw_tool=>ty_srv_id_ranges
-        RETURNING
-          VALUE(r_output)  TYPE list_string_table,
-
-      "! <p class="shorttext synchronized" lang="en">Invalidate all $metadata+annotation cache tokens-all clients</p>
-      "!
-      "! @parameter r_output | <p class="shorttext synchronized" lang="en">Log</p>
-      wipe_odata_meta_cache_token
-        RETURNING
-          VALUE(r_output) TYPE list_string_table,
-
-      calc_app_index
-        IMPORTING
-          i_repo          TYPE /ui5/ui5_repository_ui OPTIONAL
-        RETURNING
-          VALUE(r_output) TYPE list_string_table,
-
-      get_show_icf_active
-        IMPORTING
-          i_show_ui5_odata_only TYPE abap_bool OPTIONAL
-        EXPORTING
-          e_services            TYPE icf_exchg_pub_ttyp
-          e_output              TYPE list_string_table,
-
-      get_show_icf_inactive
-        IMPORTING
-          i_show_ui5_odata_only TYPE abap_bool OPTIONAL
-        EXPORTING
-          e_services            TYPE icf_exchg_pub_ttyp
-          e_output              TYPE list_string_table.
+    "! <p class="shorttext synchronized" lang="en">Setup</p>
+    "!
+    "! @parameter i_output_mode | <p class="shorttext synchronized" lang="en">Output mode (GUI/string_table)</p>
+    METHODS constructor
+      IMPORTING
+        i_output_mode TYPE zif_sapdev_gw_tool=>ty_output_mode DEFAULT zif_sapdev_gw_tool=>gc_output_mode-gui_output.
 
 
   PROTECTED SECTION.
     METHODS:
-      build_icfservice_fcat RETURNING VALUE(r_result) TYPE slis_t_fieldcat_alv,
+      build_icfservice_fcat RETURNING VALUE(result) TYPE slis_t_fieldcat_alv,
 
       retrieve_list_output
         IMPORTING
-          i_free          TYPE abap_bool DEFAULT abap_true
+          i_free        TYPE abap_bool DEFAULT abap_true
         RETURNING
-          VALUE(r_output) TYPE list_string_table,
+          VALUE(result) TYPE list_string_table,
 
       itab_to_csv
         IMPORTING
-          i_tab        TYPE INDEX TABLE
-          i_separator  TYPE clike DEFAULT ';'
+          i_tab         TYPE INDEX TABLE
+          i_separator   TYPE clike DEFAULT ';'
         RETURNING
-          VALUE(r_csv) TYPE list_string_table.
+          VALUE(result) TYPE list_string_table.
 
   PRIVATE SECTION.
 ENDCLASS.
-
-
 
 CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
 
@@ -113,18 +57,18 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
     me->output_mode = i_output_mode.
   ENDMETHOD.
 
-  METHOD wipe_client_cache.
+  METHOD zif_sapdev_gw_tool~wipe_client_cache.
     "Do we have this ?
     SELECT SINGLE @abap_true FROM tadir INTO @DATA(exists)
       WHERE pgmid = 'R3TR'
-    AND object = 'PROG'
-    AND obj_name = '/UI2/INVALIDATE_CLIENT_CACHES'.
+        AND object = 'PROG'
+        AND obj_name = '/UI2/INVALIDATE_CLIENT_CACHES'.
 
     IF sy-subrc NE 0.
       IF me->output_mode = gc_output_mode-gui_output.
-        MESSAGE 'Report /UI2/INVALIDATE_CLIENT_CACHES does not exist' TYPE 'I' DISPLAY LIKE 'E'. "#EC NOTEXT
+        MESSAGE 'Report /UI2/INVALIDATE_CLIENT_CACHES does not exist'(001) TYPE 'I' DISPLAY LIKE 'E'.
       ELSE.
-        APPEND |/UI2/INVALIDATE_CLIENT_CACHES| TO r_output.
+        APPEND TEXT-001 TO result.
       ENDIF.
       RETURN.
     ENDIF.
@@ -134,7 +78,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
         SUBMIT /ui2/invalidate_client_caches WITH gv_all = abap_true AND RETURN. "#EC CI_SUBMIT
       ELSE.
         SUBMIT /ui2/invalidate_client_caches WITH gv_all = abap_true EXPORTING LIST TO MEMORY AND RETURN. "#EC CI_SUBMIT
-        r_output = retrieve_list_output( ).
+        result = retrieve_list_output( ).
       ENDIF.
     ELSE.
       IF me->output_mode = gc_output_mode-gui_output.
@@ -148,25 +92,25 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
           WITH gv_user = abap_true
           WITH g_uname = i_just_for_username EXPORTING LIST TO MEMORY AND RETURN. "#EC CI_SUBMIT
 
-        r_output = retrieve_list_output( ).
+        result = retrieve_list_output( ).
       ENDIF.
     ENDIF.
 
   ENDMETHOD.
 
-  METHOD wipe_global_cache.
+  METHOD zif_sapdev_gw_tool~wipe_global_cache.
 
     "Do we have this ?
     SELECT SINGLE @abap_true FROM tadir INTO @DATA(exists)
       WHERE pgmid = 'R3TR'
-    AND object = 'PROG'
-    AND obj_name = '/UI2/INVALIDATE_GLOBAL_CACHES'.
+        AND object = 'PROG'
+        AND obj_name = '/UI2/INVALIDATE_GLOBAL_CACHES'.
 
     IF sy-subrc NE 0.
       IF me->output_mode = gc_output_mode-gui_output.
-        MESSAGE 'Report /UI2/INVALIDATE_GLOBAL_CACHES does not exist' TYPE 'I' DISPLAY LIKE 'E'. "#EC NOTEXT
+        MESSAGE 'Report /UI2/INVALIDATE_GLOBAL_CACHES does not exist'(002) TYPE 'I' DISPLAY LIKE 'E'.
       ELSE.
-        APPEND |Report /UI2/INVALIDATE_GLOBAL_CACHES does not exist| TO r_output. "#EC NOTEXT
+        APPEND TEXT-002 TO result.
       ENDIF.
       RETURN.
     ENDIF.
@@ -180,18 +124,18 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
         WITH gv_test = abap_false
         WITH gv_exe = abap_true EXPORTING LIST TO MEMORY AND RETURN.
 
-      r_output = retrieve_list_output( ).
+      result = retrieve_list_output( ).
     ENDIF.
 
   ENDMETHOD.
 
-  METHOD wipe_odata_meta_cache.
+  METHOD zif_sapdev_gw_tool~wipe_odata_meta_cache.
 
     IF lines(  i_service_ranges ) = 0.
       IF me->output_mode = gc_output_mode-gui_output.
-        MESSAGE 'Please select at least one service' TYPE 'I' DISPLAY LIKE 'E'. "#EC NOTEXT
+        MESSAGE 'Please select at least one service'(003) TYPE 'I' DISPLAY LIKE 'E'.
       ELSE.
-        APPEND |Please select at least one service| TO r_output. "#EC NOTEXT
+        APPEND TEXT-003 TO result.
       ENDIF.
       RETURN.
     ENDIF.
@@ -217,15 +161,15 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
           WRITE: / icon_error_protocol AS ICON, service-srv_identifier.
           WRITE: / '  ', error_text.
         ELSE.
-          APPEND |ERROR: { service-srv_identifier } | TO r_output.
-          APPEND |  { service-srv_identifier }| TO r_output.
+          APPEND |ERROR: { service-srv_identifier } | TO result.
+          APPEND |  { service-srv_identifier }| TO result.
         ENDIF.
         CONTINUE.
       ELSE.
         IF me->output_mode = gc_output_mode-gui_output.
           WRITE: / icon_okay AS ICON, service-srv_identifier.
         ELSE.
-          APPEND |Wiped: { service-srv_identifier }| TO r_output. "#EC NOTEXT
+          APPEND |Wiped: { service-srv_identifier }| TO result ##NO_TEXT.
         ENDIF.
       ENDIF.
 
@@ -236,20 +180,21 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
       IF me->output_mode = gc_output_mode-gui_output.
         WRITE no_hits.
       ELSE.
-        APPEND |{ no_hits }| TO r_output.
+        APPEND |{ no_hits }| TO result.
       ENDIF.
     ENDIF.
 
   ENDMETHOD.
 
-  METHOD get_show_icf_active.
+  METHOD zif_sapdev_gw_tool~get_show_icf_active.
 
     cl_icf_service_publication=>get_activate_nodes( IMPORTING it_icf_exchg_pub = DATA(active_services) ).
 
     IF me->output_mode = gc_output_mode-gui_output.
 
       "Setup and Display List
-      IF i_show_ui5_odata_only = abap_true."Filter on UI5 and OData services by default
+      IF i_show_ui5_odata_only = abap_true.
+        "Filter on UI5 and OData services by default
         DATA(list_filter) = VALUE slis_t_filter_alv(
           ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/bc/ui5_ui5/*')
           ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/opu/*')
@@ -258,10 +203,10 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
 
       DATA(field_catalog) = build_icfservice_fcat( ).
 
-      CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+      CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY' "#EC SCOPE_OF_VAR
         EXPORTING
           i_structure_name = 'ICF_EXCHG_PUB'
-          i_grid_title     = CONV lvc_title( 'Active Services' )  "#EC NOTEXT
+          i_grid_title     = CONV lvc_title( 'Active Services' ) ##NO_TEXT
           is_layout        = VALUE slis_layout_alv( zebra = abap_true colwidth_optimize = abap_true cell_merge = 'N' )
           it_filter        = list_filter
           it_fieldcat      = field_catalog
@@ -276,8 +221,9 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
       ENDIF.
 
     ELSE.
-      IF i_show_ui5_odata_only = abap_true."Filter on UI5 and OData services by default
-        LOOP AT active_services TRANSPORTING NO FIELDS WHERE ( path NP '/sap/bc/ui5_ui5/*' AND path NP '/sap/opu/*' ).
+      IF i_show_ui5_odata_only = abap_true.
+        "Filter on UI5 and OData services by default
+        LOOP AT active_services TRANSPORTING NO FIELDS WHERE ( path NP '/sap/bc/ui5_ui5/*' AND path NP '/sap/opu/*' ). "#EC PREF_LINE_EX
           DELETE active_services.
         ENDLOOP.
       ENDIF.
@@ -293,13 +239,14 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD get_show_icf_inactive.
+  METHOD zif_sapdev_gw_tool~get_show_icf_inactive.
     cl_icf_service_publication=>get_inactive_nodes( IMPORTING et_icf_exchg_pub  = DATA(inactive_services) ).
 
     IF me->output_mode = gc_output_mode-gui_output.
 
       "Setup and Display List
-      IF i_show_ui5_odata_only = abap_true."Filter on UI5 and OData services by default
+      IF i_show_ui5_odata_only = abap_true.
+        "Filter on UI5 and OData services by default
         DATA(list_filter) = VALUE slis_t_filter_alv(
           ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/bc/ui5_ui5/*')
           ( tabname = 'ICF_EXCHG_PUB' fieldname = 'PATH' sign0 = 'I' optio = 'CP' valuf_int = '/sap/opu/*')
@@ -308,10 +255,10 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
 
       DATA(field_catalog) = build_icfservice_fcat( ).
 
-      CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+      CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'  "#EC SCOPE_OF_VAR
         EXPORTING
-          i_structure_name = 'ICF_EXCHG_PUB'
-          i_grid_title     = CONV lvc_title( 'Inactive Services' )  "#EC NOTEXT
+          i_structure_name = 'ICF_EXCHG_PUB' ##NO_TEXT
+          i_grid_title     = CONV lvc_title( 'Inactive Services' ) ##NO_TEXT
           is_layout        = VALUE slis_layout_alv( zebra = abap_true colwidth_optimize = abap_true cell_merge = 'N' )
           it_filter        = list_filter
           it_fieldcat      = field_catalog
@@ -326,8 +273,9 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
       ENDIF.
 
     ELSE.
-      IF i_show_ui5_odata_only = abap_true."Filter on UI5 and OData services by default
-        LOOP AT inactive_services TRANSPORTING NO FIELDS WHERE ( path NP '/sap/bc/ui5_ui5/*' AND path NP '/sap/opu/*' ).
+      IF i_show_ui5_odata_only = abap_true.
+        "Filter on UI5 and OData services by default
+        LOOP AT inactive_services TRANSPORTING NO FIELDS WHERE ( path NP '/sap/bc/ui5_ui5/*' AND path NP '/sap/opu/*' ). "#EC PREF_LINE_EX
           DELETE inactive_services.
         ENDLOOP.
       ENDIF.
@@ -350,7 +298,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
         i_program_name         = sy-cprog
         i_structure_name       = 'ICF_EXCHG_PUB'
       CHANGING
-        ct_fieldcat            = r_result
+        ct_fieldcat            = result
       EXCEPTIONS
         inconsistent_interface = 1
         program_error          = 2
@@ -360,18 +308,18 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
         WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
     ENDIF.
 
-    LOOP AT r_result ASSIGNING FIELD-SYMBOL(<field_meta>).
+    LOOP AT result ASSIGNING FIELD-SYMBOL(<field_meta>).
       CASE <field_meta>-fieldname.
         WHEN 'VHOST' OR 'REF_VHOST' OR 'CREATION_DATE' OR 'CREATION_TIME' OR 'COUNTER'.
           <field_meta>-no_out =  abap_true.
         WHEN 'PATH'.
           <field_meta>-seltext_s = 'Serv/Alias'.
-          <field_meta>-seltext_m = <field_meta>-seltext_l = <field_meta>-reptext_ddic = 'Service/Alias'. "#EC NOTEXT
+          <field_meta>-seltext_m = <field_meta>-seltext_l = <field_meta>-reptext_ddic = 'Service/Alias'(004). "#EC EQUALS_CHAINING
         WHEN 'REF_PATH'.
           <field_meta>-seltext_s = 'AliasedSrv' .
-          <field_meta>-seltext_m = <field_meta>-seltext_l = <field_meta>-reptext_ddic = 'Aliased Service'. "#EC NOTEXT
+          <field_meta>-seltext_m = <field_meta>-seltext_l = <field_meta>-reptext_ddic = 'Aliased Service'(005). "#EC EQUALS_CHAINING
         WHEN 'PUBLIC_SERVICE'.
-          <field_meta>-seltext_s = <field_meta>-seltext_m = <field_meta>-seltext_l = <field_meta>-reptext_ddic = 'Public'. "#EC NOTEXT
+          <field_meta>-seltext_s = <field_meta>-seltext_m = <field_meta>-seltext_l = <field_meta>-reptext_ddic = 'Public'(006). "#EC EQUALS_CHAINING
       ENDCASE.
     ENDLOOP.
 
@@ -395,7 +343,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
 
     CALL FUNCTION 'LIST_TO_ASCI'
       IMPORTING
-        list_string_ascii  = r_output
+        list_string_ascii  = result
       TABLES
         listobject         = listobject
       EXCEPTIONS
@@ -404,7 +352,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
         OTHERS             = 3.
 
     IF sy-subrc <> 0.
-      "Oops!... I Did It Again
+      RETURN.
     ENDIF.
 
     IF i_free = abap_true.
@@ -435,24 +383,24 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
         ENDIF.
       ENDDO.
 
-      APPEND csv_line TO r_csv.
+      APPEND csv_line TO result.
     ENDLOOP.
 
   ENDMETHOD.
 
-  METHOD calc_app_index.
+  METHOD zif_sapdev_gw_tool~calc_app_index.
 
     "Do we have this ?
     SELECT SINGLE @abap_true FROM tadir INTO @DATA(exists)
       WHERE pgmid = 'R3TR'
-    AND object = 'PROG'
-    AND obj_name = '/UI5/APP_INDEX_CALCULATE'.
+        AND object = 'PROG'
+        AND obj_name = '/UI5/APP_INDEX_CALCULATE'.
 
     IF sy-subrc NE 0.
       IF me->output_mode = gc_output_mode-gui_output.
-        MESSAGE 'Report /UI5/APP_INDEX_CALCULATE does not exist' TYPE 'I' DISPLAY LIKE 'E'. "#EC NOTEXT
+        MESSAGE 'Report /UI5/APP_INDEX_CALCULATE does not exist'(007) TYPE 'I' DISPLAY LIKE 'E'.
       ELSE.
-        APPEND |Report /UI5/APP_INDEX_CALCULATE does not exist| TO r_output. "#EC NOTEXT
+        APPEND TEXT-007 TO result.
       ENDIF.
       RETURN.
     ENDIF.
@@ -480,12 +428,12 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
           WITH p_repo = i_repo EXPORTING LIST TO MEMORY AND RETURN.
       ENDIF.
 
-      r_output = retrieve_list_output( ).
+      result = retrieve_list_output( ).
     ENDIF.
 
   ENDMETHOD.
 
-  METHOD wipe_odata_meta_cache_token.
+  METHOD zif_sapdev_gw_tool~wipe_odata_meta_cache_token.
 
     "This method is the adjusted copy of report /ui5/del_odata_metadata_cache
     "without the final message statement, which would dump in HTTP Plugin Mode.
@@ -518,21 +466,21 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
 
         lo_app_index->invalidate_backend_contexts( ).
 
-* SAPDEV: Custom Code - BEGIN
+        "SAPDEV: Custom Code - BEGIN
         IF me->output_mode = gc_output_mode-gui_output.
-          MESSAGE 'Backend context tokens have been invalidated successfully' TYPE 'S'. "#EC NOTEXT
+          MESSAGE 'Backend context tokens have been invalidated successfully'(008) TYPE 'S'.
         ELSE.
-          APPEND |Backend context tokens have been invalidated successfully| TO r_output. "#EC NOTEXT
+          APPEND TEXT-008 TO result.
         ENDIF.
 
-      CATCH cx_root INTO DATA(ex_root).
+      CATCH cx_root INTO DATA(ex_root).               "#EC NEED_CX_ROOT
         IF me->output_mode = gc_output_mode-gui_output.
-          MESSAGE ex_root->get_text( ) TYPE 'I' DISPLAY LIKE 'E'. "#EC NOTEXT
+          MESSAGE ex_root->get_text( ) TYPE 'I' DISPLAY LIKE 'E' ##NO_TEXT.
         ELSE.
-          APPEND ex_root->get_text( ) TO r_output.          "#EC NOTEXT
+          APPEND ex_root->get_text( ) TO result ##NO_TEXT.
         ENDIF.
     ENDTRY.
-* SAPDEV: Custom Code - END
+    "SAPDEV: Custom Code - END
 
   ENDMETHOD.
 

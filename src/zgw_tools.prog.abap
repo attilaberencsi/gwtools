@@ -1,5 +1,6 @@
 *&---------------------------------------------------------------------*
 *& Report zgw_tools
+*& This report is OBSOLETE not developed anymore. Use ZGW_TOOLS_OO
 *&---------------------------------------------------------------------*
 *& Gateway Helper for Fiori DevOps.
 *& Handy tool for Developers, DevOps Colleagues and Application Managers
@@ -7,7 +8,6 @@
 *& Not MVC, just a local helper implemented for separation of model and
 *& controller function for a given GW Tool feature or ABAP Event Block.
 *&---------------------------------------------------------------------*
-*& Author: Attila Berencsi, sapdev.eu
 *& Version Info (YYMMDD): v220123
 *& https://github.com/attilaberencsi/gwtools
 *& Licence: MIT
