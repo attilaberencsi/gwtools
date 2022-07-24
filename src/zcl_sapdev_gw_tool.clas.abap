@@ -17,6 +17,8 @@ CLASS zcl_sapdev_gw_tool DEFINITION
     ALIASES: calc_app_index FOR zif_sapdev_gw_tool~calc_app_index.
     ALIASES: get_show_icf_active FOR zif_sapdev_gw_tool~get_show_icf_active.
     ALIASES: get_show_icf_inactive FOR zif_sapdev_gw_tool~get_show_icf_inactive.
+    ALIASES: convert_edm_to_raw16_guid FOR zif_sapdev_gw_tool~convert_edm_to_raw16_guid.
+    ALIASES: convert_raw16_to_edm_guid FOR zif_sapdev_gw_tool~convert_raw16_to_edm_guid.
 
     ALIASES gc_output_mode FOR zif_sapdev_gw_tool~gc_output_mode.
 
@@ -481,6 +483,35 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
         ENDIF.
     ENDTRY.
     "SAPDEV: Custom Code - END
+
+  ENDMETHOD.
+
+  METHOD zif_sapdev_gw_tool~convert_edm_to_raw16_guid.
+
+    CHECK strlen( i_edm_guid ) = zif_sapdev_gw_tool~co_guid_length-edm.
+
+    DATA(edm_guid) = i_edm_guid.
+    REPLACE ALL OCCURRENCES OF '-' IN edm_guid  WITH ''.
+
+    IF strlen( edm_guid ) <> zif_sapdev_gw_tool~co_guid_length-sap.
+      RETURN.
+    ENDIF.
+
+    TRANSLATE edm_guid TO UPPER CASE.
+
+    r_raw16_guid = edm_guid.
+
+  ENDMETHOD.
+
+  METHOD zif_sapdev_gw_tool~convert_raw16_to_edm_guid.
+    " - Edm.Guid: Represents a 16-byte (128-bit) unique identifier value
+    "   guid'dddddddd-dddd-dddd-dddd-dddddddddddd' where each d represents [A-Fa-f0-9]
+
+    CHECK i_raw16_guid IS NOT INITIAL.
+
+    DATA(guid_as_text) = CONV sysuuid_c( i_raw16_guid ).
+    r_edm_guid = |{ guid_as_text+0(8) }-{ guid_as_text+8(4) }-{ guid_as_text+12(4) }-{ guid_as_text+16(4) }-{ guid_as_text+20(12) }|.
+    TRANSLATE r_edm_guid TO LOWER CASE.
 
   ENDMETHOD.
 

@@ -25,6 +25,12 @@ INTERFACE zif_sapdev_gw_tool
       string_tab TYPE ty_output_mode VALUE 2,
     END OF gc_output_mode.
 
+  CONSTANTS:
+    BEGIN OF co_guid_length,
+      sap TYPE i VALUE 32,
+      edm TYPE i VALUE 36,
+    END OF co_guid_length.
+
   "! <p class="shorttext synchronized" lang="en">Submit report /UI2/INVALIDATE_CLIENT_CACHES</p>
   "!
   "! @parameter i_just_for_username | <p class="shorttext synchronized" lang="en">Wipe Cache for this user only</p>
@@ -76,7 +82,7 @@ INTERFACE zif_sapdev_gw_tool
   "! @parameter i_show_ui5_odata_only | <p class="shorttext synchronized" lang="en">Only UI5 App EndPoints</p>
   "! @parameter e_services | <p class="shorttext synchronized" lang="en">Service list</p>
   "! @parameter e_output | <p class="shorttext synchronized" lang="en">Plain Log Output</p>
-  METHODS get_show_icf_active
+  METHODS get_show_icf_active                      "#EC NUM_OUTPUT_PARA
     IMPORTING
       i_show_ui5_odata_only TYPE abap_bool OPTIONAL
     EXPORTING
@@ -88,11 +94,34 @@ INTERFACE zif_sapdev_gw_tool
   "! @parameter i_show_ui5_odata_only | <p class="shorttext synchronized" lang="en">Only UI5 App EndPoints</p>
   "! @parameter e_services | <p class="shorttext synchronized" lang="en">Service list</p>
   "! @parameter e_output | <p class="shorttext synchronized" lang="en">Plain Log Output</p>
-  METHODS get_show_icf_inactive
+  METHODS get_show_icf_inactive                    "#EC NUM_OUTPUT_PARA
     IMPORTING
       i_show_ui5_odata_only TYPE abap_bool OPTIONAL
     EXPORTING
       e_services            TYPE icf_exchg_pub_ttyp
       e_output              TYPE list_string_table.
+
+
+  "! <p class="shorttext synchronized" lang="en">Convert SAP RAW16 GUID/UUID to Edm.Guid</p>
+  "!
+  "! @parameter i_raw16_guid | <p class="shorttext synchronized" lang="en">sysuuid_x</p>
+  "! @parameter r_edm_guid | <p class="shorttext synchronized" lang="en">Edm.Guid</p>
+  METHODS convert_raw16_to_edm_guid
+    IMPORTING
+      i_raw16_guid      TYPE sysuuid_x
+    RETURNING
+      VALUE(r_edm_guid) TYPE string.
+
+
+  "! <p class="shorttext synchronized" lang="en">Convert Edm.Guid to SAP RAW16 GUID/UUID</p>
+  "!
+  "! @parameter i_edm_guid | <p class="shorttext synchronized" lang="en">Edm.Guid</p>
+  "! @parameter r_raw16_guid | <p class="shorttext synchronized" lang="en">sysuuid_x</p>
+  METHODS convert_edm_to_raw16_guid
+    IMPORTING
+      i_edm_guid          TYPE string
+    RETURNING
+      VALUE(r_raw16_guid) TYPE sysuuid_x.
+
 
 ENDINTERFACE.
