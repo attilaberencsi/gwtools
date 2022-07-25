@@ -12,6 +12,11 @@
    </PROGDIR>
    <TPOOL>
     <item>
+     <ID>R</ID>
+     <ENTRY>Gateway Tools</ENTRY>
+     <LENGTH>13</LENGTH>
+    </item>
+    <item>
      <ID>I</ID>
      <KEY>BC1</KEY>
      <ENTRY>Emptying server cache does not comes with instant results for end users ?</ENTRY>
@@ -34,6 +39,24 @@
      <KEY>BC4</KEY>
      <ENTRY>In FIREFOX press this key combination to wipe cache: Ctrl+Shift+Del</ENTRY>
      <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>BGI</KEY>
+     <ENTRY>Edm -&gt; RAW16</ENTRY>
+     <LENGTH>44</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>BGO</KEY>
+     <ENTRY>RAW16 -&gt; Edm</ENTRY>
+     <LENGTH>22</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>GID</KEY>
+     <ENTRY>GUID Tools</ENTRY>
+     <LENGTH>20</LENGTH>
     </item>
     <item>
      <ID>I</ID>
@@ -144,17 +167,6 @@
      <LENGTH>20</LENGTH>
     </item>
     <item>
-     <ID>I</ID>
-     <KEY>TBC</KEY>
-     <ENTRY>Wipe web browser cache on local computer</ENTRY>
-     <LENGTH>80</LENGTH>
-    </item>
-    <item>
-     <ID>R</ID>
-     <ENTRY>Gateway Tools</ENTRY>
-     <LENGTH>13</LENGTH>
-    </item>
-    <item>
      <ID>S</ID>
      <KEY>P_ICFACT</KEY>
      <ENTRY>D Show Active SICF Services</ENTRY>
@@ -219,6 +231,12 @@
      <KEY>SERV_ID</KEY>
      <ENTRY>Wipe Metadata of Service(s)</ENTRY>
      <LENGTH>35</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>TBC</KEY>
+     <ENTRY>Wipe web browser cache on local computer</ENTRY>
+     <LENGTH>80</LENGTH>
     </item>
    </TPOOL>
   </asx:values>
