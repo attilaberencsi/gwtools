@@ -12,11 +12,6 @@
    </PROGDIR>
    <TPOOL>
     <item>
-     <ID>R</ID>
-     <ENTRY>Gateway Tools</ENTRY>
-     <LENGTH>13</LENGTH>
-    </item>
-    <item>
      <ID>I</ID>
      <KEY>BC1</KEY>
      <ENTRY>Emptying server cache does not comes with instant results for end users ?</ENTRY>
@@ -54,8 +49,20 @@
     </item>
     <item>
      <ID>I</ID>
+     <KEY>CAS</KEY>
+     <ENTRY>CACHE MANAGEMENT</ENTRY>
+     <LENGTH>26</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>FLP</KEY>
+     <ENTRY>CACHE MANAGEMENT - FLP</ENTRY>
+     <LENGTH>44</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
      <KEY>GID</KEY>
-     <ENTRY>GUID Tools</ENTRY>
+     <ENTRY>GUID Converter</ENTRY>
      <LENGTH>20</LENGTH>
     </item>
     <item>
@@ -163,8 +170,25 @@
     <item>
      <ID>I</ID>
      <KEY>MWT</KEY>
-     <ENTRY>MAGIC WAND</ENTRY>
+     <ENTRY>Magic Wand</ENTRY>
      <LENGTH>20</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>SIC</KEY>
+     <ENTRY>ICF SERVICE ENDPOINTS</ENTRY>
+     <LENGTH>42</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>TBC</KEY>
+     <ENTRY>Wipe web browser cache on local computer</ENTRY>
+     <LENGTH>80</LENGTH>
+    </item>
+    <item>
+     <ID>R</ID>
+     <ENTRY>Gateway Tools</ENTRY>
+     <LENGTH>13</LENGTH>
     </item>
     <item>
      <ID>S</ID>
@@ -205,7 +229,7 @@
     <item>
      <ID>S</ID>
      <KEY>P_UNAMEM</KEY>
-     <ENTRY>For User</ENTRY>
+     <ENTRY>for User</ENTRY>
      <LENGTH>16</LENGTH>
     </item>
     <item>
@@ -229,14 +253,8 @@
     <item>
      <ID>S</ID>
      <KEY>SERV_ID</KEY>
-     <ENTRY>Wipe Metadata of Service(s)</ENTRY>
+     <ENTRY>of Service(s)</ENTRY>
      <LENGTH>35</LENGTH>
-    </item>
-    <item>
-     <ID>I</ID>
-     <KEY>TBC</KEY>
-     <ENTRY>Wipe web browser cache on local computer</ENTRY>
-     <LENGTH>80</LENGTH>
     </item>
    </TPOOL>
   </asx:values>

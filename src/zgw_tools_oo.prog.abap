@@ -27,23 +27,41 @@ TABLES /iwfnd/i_med_srh.
 " Selection-screen
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Execution options (Magic Wand)
-SELECTION-SCREEN BEGIN OF BLOCK bo WITH FRAME TITLE mwt.
+SELECTION-SCREEN BEGIN OF BLOCK bo WITH FRAME TITLE TEXT-mwt.
+
+  SELECTION-SCREEN COMMENT /1(79) TEXT-cas.
+  SELECTION-SCREEN ULINE.
 
   PARAMETERS:
     p_wipesm RADIOBUTTON GROUP ro DEFAULT 'X',
-    p_unamem TYPE syuname LOWER CASE DEFAULT sy-uname MATCHCODE OBJECT user_comp,
-    p_wipesg RADIOBUTTON GROUP ro,
-    p_wipeme RADIOBUTTON GROUP ro.
+    p_unamem TYPE syuname LOWER CASE DEFAULT sy-uname MATCHCODE OBJECT user_comp.
 
+  SELECTION-SCREEN SKIP.
+  PARAMETERS:
+    p_wipeme RADIOBUTTON GROUP ro.
   SELECT-OPTIONS: serv_id FOR /iwfnd/i_med_srh-srv_identifier NO INTERVALS.
 
+
+  SELECTION-SCREEN SKIP.
+  SELECTION-SCREEN COMMENT /1(79) TEXT-flp.
+  SELECTION-SCREEN ULINE.
+
+  PARAMETERS:
+    p_index RADIOBUTTON GROUP ro,
+    p_repo  TYPE /ui5/ui5_repository_ui.
+  SELECTION-SCREEN SKIP.
+  PARAMETERS:
+    p_idxbck RADIOBUTTON GROUP ro,
+    p_wipesg RADIOBUTTON GROUP ro.
+
+
+  SELECTION-SCREEN SKIP.
+  SELECTION-SCREEN COMMENT /1(50) TEXT-sic.
+  SELECTION-SCREEN ULINE.
   PARAMETERS:
     p_icfact RADIOBUTTON GROUP ro,
     p_icfina RADIOBUTTON GROUP ro,
-    p_odui5o AS CHECKBOX,
-    p_index  RADIOBUTTON GROUP ro,
-    p_repo   TYPE /ui5/ui5_repository_ui,
-    p_idxbck RADIOBUTTON GROUP ro.
+    p_odui5o AS CHECKBOX.
 
 SELECTION-SCREEN END OF BLOCK bo.
 
@@ -54,9 +72,9 @@ SELECTION-SCREEN BEGIN OF BLOCK bg WITH FRAME TITLE TEXT-gid.
     PARAMETERS: p_oraw  TYPE sysuuid_c32.
   SELECTION-SCREEN END OF LINE.
   SELECTION-SCREEN BEGIN OF LINE.
-    PARAMETERS: p_iraw  TYPE sysuuid_c32 LOWER CASE.
+    PARAMETERS: p_iraw  TYPE sysuuid_c32.
     SELECTION-SCREEN PUSHBUTTON 34(12) TEXT-bgo USER-COMMAND gou.
-    PARAMETERS: p_oedm  TYPE c LENGTH 36.
+    PARAMETERS: p_oedm  TYPE c LENGTH 36 LOWER CASE.
   SELECTION-SCREEN END OF LINE.
 SELECTION-SCREEN END OF BLOCK bg.
 
@@ -159,7 +177,6 @@ CLASS lcl_gw_tool IMPLEMENTATION.
 
   METHOD initialization.
     "Set selection-screen texts
-    mwt = TEXT-mwt.
 
     "Help Text lines
     ht  = TEXT-hth.
