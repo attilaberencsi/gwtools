@@ -68,7 +68,7 @@
     <item>
      <ID>I</ID>
      <KEY>H10</KEY>
-     <ENTRY>G - After Upgade, Note or Distribution Layer Installation OR failsafe option</ENTRY>
+     <ENTRY>G - After Upgade/Note Installation OR failsafe options: BAS deployment issue,</ENTRY>
      <LENGTH>132</LENGTH>
     </item>
     <item>
@@ -80,7 +80,7 @@
     <item>
      <ID>I</ID>
      <KEY>H12</KEY>
-     <ENTRY>Select repo. Kill system performance just when full calculation is needed</ENTRY>
+     <ENTRY>Select repo! Kill system performance just when full calculation is needed</ENTRY>
      <LENGTH>116</LENGTH>
     </item>
     <item>
