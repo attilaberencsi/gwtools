@@ -60,13 +60,14 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD zif_sapdev_gw_tool~wipe_client_cache.
-    "Do we have this ?
-    SELECT SINGLE @abap_true FROM tadir INTO @DATA(exists)
-      WHERE pgmid = 'R3TR'
-        AND object = 'PROG'
+    " Do we have this ?
+    SELECT SINGLE @abap_true FROM tadir
+      INTO @DATA(exists)
+      WHERE pgmid    = 'R3TR'
+        AND object   = 'PROG'
         AND obj_name = '/UI2/INVALIDATE_CLIENT_CACHES'.
 
-    IF sy-subrc NE 0.
+    IF sy-subrc <> 0.
       IF me->output_mode = gc_output_mode-gui_output.
         MESSAGE 'Report /UI2/INVALIDATE_CLIENT_CACHES does not exist'(001) TYPE 'I' DISPLAY LIKE 'E'.
       ELSE.
@@ -77,27 +78,34 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
 
     IF i_just_for_username IS INITIAL.
       IF me->output_mode = gc_output_mode-gui_output.
-        SUBMIT /ui2/invalidate_client_caches WITH gv_all = abap_true AND RETURN. "#EC CI_SUBMIT
+        SUBMIT /ui2/invalidate_client_caches
+               WITH gv_all = abap_true
+               AND RETURN. "#EC CI_SUBMIT
       ELSE.
-        SUBMIT /ui2/invalidate_client_caches WITH gv_all = abap_true EXPORTING LIST TO MEMORY AND RETURN. "#EC CI_SUBMIT
+        SUBMIT /ui2/invalidate_client_caches
+               WITH gv_all = abap_true
+               EXPORTING LIST TO MEMORY
+               AND RETURN. "#EC CI_SUBMIT
         result = retrieve_list_output( ).
       ENDIF.
     ELSE.
       IF me->output_mode = gc_output_mode-gui_output.
         SUBMIT /ui2/invalidate_client_caches
-          WITH gv_all = abap_false
-          WITH gv_user = abap_true
-          WITH g_uname = i_just_for_username AND RETURN. "#EC CI_SUBMIT
+               WITH gv_all = abap_false
+               WITH gv_user = abap_true
+               WITH g_uname = i_just_for_username
+               AND RETURN. "#EC CI_SUBMIT
       ELSE.
         SUBMIT /ui2/invalidate_client_caches
-          WITH gv_all = abap_false
-          WITH gv_user = abap_true
-          WITH g_uname = i_just_for_username EXPORTING LIST TO MEMORY AND RETURN. "#EC CI_SUBMIT
+               WITH gv_all = abap_false
+               WITH gv_user = abap_true
+               WITH g_uname = i_just_for_username
+               EXPORTING LIST TO MEMORY
+               AND RETURN. "#EC CI_SUBMIT
 
         result = retrieve_list_output( ).
       ENDIF.
     ENDIF.
-
   ENDMETHOD.
 
   METHOD zif_sapdev_gw_tool~wipe_global_cache.

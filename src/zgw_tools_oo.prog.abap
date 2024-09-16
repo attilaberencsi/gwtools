@@ -217,7 +217,7 @@ CLASS lcl_gw_tool IMPLEMENTATION.
     CASE abap_true.
 
       WHEN p_wipesm.
-        gw_tool->wipe_client_cache(  ).
+        gw_tool->wipe_client_cache( p_unamem ).
 
       WHEN p_wipesg.
         gw_tool->wipe_global_cache( ).
@@ -232,15 +232,14 @@ CLASS lcl_gw_tool IMPLEMENTATION.
         gw_tool->get_show_icf_inactive( i_show_ui5_odata_only = p_odui5o ).
 
       WHEN p_index.
-        "Calculate UI5 Application Index
+        " Calculate UI5 Application Index
         gw_tool->calc_app_index( i_repo = p_repo ).
 
       WHEN p_idxbck.
-        "UI5 Application Index of Backend Context (aka metadata + annotations) Tokens
+        " UI5 Application Index of Backend Context (aka metadata + annotations) Tokens
         gw_tool->wipe_odata_meta_cache_token( ).
 
     ENDCASE.
-
   ENDMETHOD.
 
 ENDCLASS.
