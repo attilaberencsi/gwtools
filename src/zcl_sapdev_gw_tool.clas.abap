@@ -523,4 +523,10 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
 
   ENDMETHOD.
 
+  METHOD zif_sapdev_gw_tool~wipe_odata_meta_cache_v4.
+    /iwfnd/cl_v2_v4_config_facade=>clear_metadata_cache( EXPORTING iv_group_id    = i_group_id
+                                                                   is_service_key = i_service_key
+                                                         IMPORTING ev_error_text  = r_error_text ).
+  ENDMETHOD.
+
 ENDCLASS.

@@ -235,8 +235,8 @@
     <item>
      <ID>S</ID>
      <KEY>P_WIPEME</KEY>
-     <ENTRY>C Wipe Metadata Cache - BE+FE</ENTRY>
-     <LENGTH>37</LENGTH>
+     <ENTRY>C Wipe Metadata Cache-BE+FE V2</ENTRY>
+     <LENGTH>38</LENGTH>
     </item>
     <item>
      <ID>S</ID>
@@ -254,7 +254,7 @@
      <ID>S</ID>
      <KEY>SERV_ID</KEY>
      <ENTRY>of Service(s)</ENTRY>
-     <LENGTH>35</LENGTH>
+     <LENGTH>21</LENGTH>
     </item>
    </TPOOL>
   </asx:values>
