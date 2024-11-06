@@ -68,6 +68,14 @@
      <DESCRIPT>Setup</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>CONSTRUCTOR</CMPNAME>
+     <SCONAME>I_OUTPUT_MODE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Output mode (GUI/string_table)</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
   </asx:values>
  </asx:abap>
 </abapGit>

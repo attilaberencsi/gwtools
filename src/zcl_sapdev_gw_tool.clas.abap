@@ -3,52 +3,44 @@
 "! <p>https://github.com/attilaberencsi/gwtools<p>
 "! <p>Licence: MIT<p>
 CLASS zcl_sapdev_gw_tool DEFINITION
-  PUBLIC
-  FINAL
-  CREATE PUBLIC .
+  PUBLIC FINAL
+  CREATE PUBLIC.
 
   PUBLIC SECTION.
-
     INTERFACES zif_sapdev_gw_tool.
-    ALIASES: wipe_client_cache FOR zif_sapdev_gw_tool~wipe_client_cache.
-    ALIASES: wipe_global_cache FOR zif_sapdev_gw_tool~wipe_global_cache.
-    ALIASES: wipe_odata_meta_cache FOR zif_sapdev_gw_tool~wipe_odata_meta_cache.
-    ALIASES: wipe_odata_meta_cache_token FOR zif_sapdev_gw_tool~wipe_odata_meta_cache_token.
-    ALIASES: calc_app_index FOR zif_sapdev_gw_tool~calc_app_index.
-    ALIASES: get_show_icf_active FOR zif_sapdev_gw_tool~get_show_icf_active.
-    ALIASES: get_show_icf_inactive FOR zif_sapdev_gw_tool~get_show_icf_inactive.
-    ALIASES: convert_edm_to_raw16_guid FOR zif_sapdev_gw_tool~convert_edm_to_raw16_guid.
-    ALIASES: convert_raw16_to_edm_guid FOR zif_sapdev_gw_tool~convert_raw16_to_edm_guid.
 
-    ALIASES gc_output_mode FOR zif_sapdev_gw_tool~gc_output_mode.
+    ALIASES wipe_client_cache           FOR zif_sapdev_gw_tool~wipe_client_cache.
+    ALIASES wipe_global_cache           FOR zif_sapdev_gw_tool~wipe_global_cache.
+    ALIASES wipe_odata_meta_cache       FOR zif_sapdev_gw_tool~wipe_odata_meta_cache.
+    ALIASES wipe_odata_meta_cache_v4    FOR zif_sapdev_gw_tool~wipe_odata_meta_cache_v4.
+    ALIASES wipe_odata_meta_cache_token FOR zif_sapdev_gw_tool~wipe_odata_meta_cache_token.
+    ALIASES calc_app_index              FOR zif_sapdev_gw_tool~calc_app_index.
+    ALIASES get_show_icf_active         FOR zif_sapdev_gw_tool~get_show_icf_active.
+    ALIASES get_show_icf_inactive       FOR zif_sapdev_gw_tool~get_show_icf_inactive.
+    ALIASES convert_edm_to_raw16_guid   FOR zif_sapdev_gw_tool~convert_edm_to_raw16_guid.
+    ALIASES convert_raw16_to_edm_guid   FOR zif_sapdev_gw_tool~convert_raw16_to_edm_guid.
 
-    DATA:
-      output_mode TYPE zif_sapdev_gw_tool=>ty_output_mode READ-ONLY.
+    ALIASES gc_output_mode              FOR zif_sapdev_gw_tool~gc_output_mode.
 
-    "! <p class="shorttext synchronized" lang="en">Setup</p>
+    DATA output_mode TYPE zif_sapdev_gw_tool=>ty_output_mode READ-ONLY.
+
+    "! <p class="shorttext synchronized">Setup</p>
     "!
-    "! @parameter i_output_mode | <p class="shorttext synchronized" lang="en">Output mode (GUI/string_table)</p>
+    "! @parameter i_output_mode | <p class="shorttext synchronized">Output mode (GUI/string_table)</p>
     METHODS constructor
-      IMPORTING
-        i_output_mode TYPE zif_sapdev_gw_tool=>ty_output_mode DEFAULT zif_sapdev_gw_tool=>gc_output_mode-gui_output.
-
+      IMPORTING i_output_mode TYPE zif_sapdev_gw_tool=>ty_output_mode DEFAULT zif_sapdev_gw_tool=>gc_output_mode-gui_output.
 
   PROTECTED SECTION.
-    METHODS:
-      build_icfservice_fcat RETURNING VALUE(result) TYPE slis_t_fieldcat_alv,
+    METHODS build_icfservice_fcat RETURNING VALUE(result) TYPE slis_t_fieldcat_alv.
 
-      retrieve_list_output
-        IMPORTING
-          i_free        TYPE abap_bool DEFAULT abap_true
-        RETURNING
-          VALUE(result) TYPE list_string_table,
+    METHODS retrieve_list_output
+      IMPORTING i_free        TYPE abap_bool DEFAULT abap_true
+      RETURNING VALUE(result) TYPE list_string_table.
 
-      itab_to_csv
-        IMPORTING
-          i_tab         TYPE INDEX TABLE
-          i_separator   TYPE clike DEFAULT ';'
-        RETURNING
-          VALUE(result) TYPE list_string_table.
+    METHODS itab_to_csv
+      IMPORTING i_tab         TYPE INDEX TABLE
+                i_separator   TYPE clike DEFAULT ';'
+      RETURNING VALUE(result) TYPE list_string_table.
 
   PRIVATE SECTION.
 ENDCLASS.
@@ -80,12 +72,12 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
       IF me->output_mode = gc_output_mode-gui_output.
         SUBMIT /ui2/invalidate_client_caches
                WITH gv_all = abap_true
-               AND RETURN. "#EC CI_SUBMIT
+               AND RETURN.                               "#EC CI_SUBMIT
       ELSE.
         SUBMIT /ui2/invalidate_client_caches
                WITH gv_all = abap_true
                EXPORTING LIST TO MEMORY
-               AND RETURN. "#EC CI_SUBMIT
+               AND RETURN.                               "#EC CI_SUBMIT
         result = retrieve_list_output( ).
       ENDIF.
     ELSE.
@@ -94,14 +86,14 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
                WITH gv_all = abap_false
                WITH gv_user = abap_true
                WITH g_uname = i_just_for_username
-               AND RETURN. "#EC CI_SUBMIT
+               AND RETURN.                               "#EC CI_SUBMIT
       ELSE.
         SUBMIT /ui2/invalidate_client_caches
                WITH gv_all = abap_false
                WITH gv_user = abap_true
                WITH g_uname = i_just_for_username
                EXPORTING LIST TO MEMORY
-               AND RETURN. "#EC CI_SUBMIT
+               AND RETURN.                               "#EC CI_SUBMIT
 
         result = retrieve_list_output( ).
       ENDIF.

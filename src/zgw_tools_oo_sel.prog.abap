@@ -16,6 +16,13 @@ SELECTION-SCREEN BEGIN OF BLOCK bo WITH FRAME TITLE TEXT-mwt.
     p_wipeme RADIOBUTTON GROUP ro.
   SELECT-OPTIONS: serv_id FOR /iwfnd/i_med_srh-srv_identifier NO INTERVALS.
 
+  SELECTION-SCREEN SKIP.
+  PARAMETERS:
+    p_wipem4 RADIOBUTTON GROUP ro,
+    p_srvgrp TYPE /iwbep/v4_med_group_id NO-DISPLAY,
+    p_srvid4 TYPE /iwbep/i_v4_msrv-service_id,
+    p_srvrep TYPE /iwbep/v4_med_repository_id NO-DISPLAY,
+    p_srvve4 TYPE /iwbep/i_v4_msrv-service_version NO-DISPLAY.
 
   SELECTION-SCREEN SKIP.
   SELECTION-SCREEN COMMENT /1(79) TEXT-flp.

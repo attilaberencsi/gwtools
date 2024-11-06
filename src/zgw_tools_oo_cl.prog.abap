@@ -1,10 +1,11 @@
 *&---------------------------------------------------------------------*
-*& Include zgw_tools_oo_sel_cl - Gateway Tools - Local Classes
+*& Include zgw_tools_oo_cl - Gateway Tools - Local Classes
 *&---------------------------------------------------------------------*
 CLASS lcl_gw_tool DEFINITION.
   PUBLIC SECTION.
     CLASS-METHODS initialization.
     CLASS-METHODS main.
+    CLASS-METHODS f4_odata_v4_srv_cache.
 
 ENDCLASS.
 
@@ -58,6 +59,18 @@ CLASS lcl_gw_tool IMPLEMENTATION.
       WHEN p_wipeme.
         gw_tool->wipe_odata_meta_cache( i_service_ranges = serv_id[] ).
 
+      WHEN p_wipem4.
+        DATA(error_text) = gw_tool->wipe_odata_meta_cache_v4(
+                               i_group_id    = p_srvgrp
+                               i_service_key = VALUE #( repository_id   = p_srvrep
+                                                        service_id      = p_srvid4
+                                                        service_version = p_srvve4    ) ).
+        IF error_text IS NOT INITIAL.
+          MESSAGE error_text TYPE 'I' DISPLAY LIKE 'E'.
+        ELSE.
+          MESSAGE 'Metadata and Annotation Model/Text Cache wiped successfully' TYPE 'S'.
+        ENDIF.
+
       WHEN p_icfact.
         gw_tool->get_show_icf_active( i_show_ui5_odata_only = p_odui5o ).
 
@@ -74,4 +87,39 @@ CLASS lcl_gw_tool IMPLEMENTATION.
 
     ENDCASE.
   ENDMETHOD.
+
+  METHOD f4_odata_v4_srv_cache.
+    SELECT * FROM ZI_SAPDEV_V4_Cache INTO TABLE @DATA(g_v4caches).
+
+    g_f4_field_mapping_srv4 = VALUE #( ( fldname = 'F0001' dyfldname  = 'P_SRVGRP' )
+                                       ( fldname = 'F0002' dyfldname  = 'P_SRVREP' )
+                                       ( fldname = 'F0003' dyfldname  = 'P_SRVID4' )
+                                       ( fldname = 'F0004' dyfldname  = 'P_SRVVE4' ) ).
+
+    CALL FUNCTION 'F4IF_INT_TABLE_VALUE_REQUEST'
+      EXPORTING
+        retfield        = 'SERVICEID'
+        dynpprog        = sy-cprog
+        dynpnr          = sy-dynnr
+        dynprofield     = 'P_SRVID4'
+        window_title    = 'V4 Cache'
+        value_org       = 'S'
+      TABLES
+        value_tab       = g_v4caches
+        return_tab      = g_f4_field_return_srv4
+        dynpfld_mapping = g_f4_field_mapping_srv4
+      EXCEPTIONS
+        parameter_error = 1
+        no_values_found = 2
+        OTHERS          = 3.
+
+    TRY.
+        p_srvgrp = g_f4_field_return_srv4[ 1 ]-fieldval.
+        p_srvrep = g_f4_field_return_srv4[ 2 ]-fieldval.
+        p_srvve4 = g_f4_field_return_srv4[ 4 ]-fieldval.
+
+      CATCH cx_sy_itab_line_not_found.
+    ENDTRY.
+  ENDMETHOD.
+
 ENDCLASS.

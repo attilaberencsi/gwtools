@@ -21,13 +21,15 @@
 *&---------------------------------------------------------------------*
 
 REPORT zgw_tools_oo.
-TABLES /iwfnd/i_med_srh.
+TABLES: /iwfnd/i_med_srh, /iwbep/i_v4_msrv.
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Selection-screen Definition
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+DATA g_f4_field_mapping_srv4 TYPE STANDARD TABLE OF dselc.
+DATA g_f4_field_return_srv4  TYPE STANDARD TABLE OF ddshretval.
+
+" SELECTION-SCREEN
 INCLUDE zgw_tools_oo_sel.
-
+" Local Helper
+INCLUDE zgw_tools_oo_cl.
 
 AT SELECTION-SCREEN.
   DATA(fcode) = sy-ucomm.
@@ -66,11 +68,8 @@ AT SELECTION-SCREEN.
 
   ENDCASE.
 
-  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  " Local Helper Class
-  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  INCLUDE zgw_tools_oo_sel_cl.
-
+AT SELECTION-SCREEN ON VALUE-REQUEST FOR p_srvid4.
+  lcl_gw_tool=>f4_odata_v4_srv_cache( ).
 
 INITIALIZATION.
   lcl_gw_tool=>initialization( ).

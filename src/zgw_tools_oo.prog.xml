@@ -228,9 +228,21 @@
     </item>
     <item>
      <ID>S</ID>
+     <KEY>P_SRVID4</KEY>
+     <ENTRY>of Service</ENTRY>
+     <LENGTH>18</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
      <KEY>P_UNAMEM</KEY>
      <ENTRY>for User</ENTRY>
      <LENGTH>16</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_WIPEM4</KEY>
+     <ENTRY>C Wipe Metadata Cache-BE+FE V4</ENTRY>
+     <LENGTH>38</LENGTH>
     </item>
     <item>
      <ID>S</ID>
