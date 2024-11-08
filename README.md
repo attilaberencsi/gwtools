@@ -16,7 +16,8 @@ Note: Wiping specific caches – when it is unnecessary – will slow down the p
 ## Features
 - Wipe Client (SMICM) Cache
 - Wipe Global (Auth/Nav) Cache
-- Wipe Metadata Cache - Backend + FrontEnd
+- Wipe Metadata Cache - Backend + FrontEnd V2
+- Wipe Metadata Cache - Backend + FrontEnd V4
 - Show Active SICF Services
 - Show Inactive SICF Services
 - Calculate Application Index - App Sources: Cache validity of App sources running in the browser / FLP
@@ -27,36 +28,14 @@ All of them are already part of the standard already, but You reach them through
 
 ## Installation
 
-- Pull this GitHub repository using ABAPGit (Online / offline behind corporate walls)
-- Create report ZGW_TOOS_OO and class ZCL_SAPDEV_GW_TOOL in your system. The sources can be found in /src folder, and add manually the text element
-
-The legacy copy/paste version ZGW_TOOLS report is not improved anymore. All new fetures go to the ZGW_TOOLS_OO only.
+- Pull this GitHub repository using ABAPGit ( Online / offline behind corporate walls )
 
 ## Test results
 ### ATC
 - Passed
 
-### Functional
-#### Validated on ABAP 1909 successfully
-
-| Software Component | Release | Support Package      | Support Package Level | Description                 |
-|--------------------|---------|----------------------|-----------------------|-----------------------------|
-| S4FND              | 104     | SAPK-10402INS4FND    | 0002                  | Foundation                  |
-| SAP_ABA            | 75E     | SAPK-75E02INSAPABA   | 0002                  | Cross-Application Component |
-| SAP_BASIS          | 754     | SAPK-75402INSAPBASIS | 0002                  | SAP Basis Component         |
-| SAP_GWFND          | 754     | SAPK-75402INSAPGWFND | 0002                  | SAP Gateway Foundation      |
-| SAP_UI             | 754     | SAPK-75404INSAPUI    | 0004                  | User Interface Technology   |
-
-
-#### Validated on ABAP 750 successfully
-
-| Software Component | Release | Support Package      | Support Package Level | Description                   |
-|--------------------|---------|----------------------|-----------------------|-------------------------------|
-| SAP_BS_FND         | 748     | SAPK-74816INSAPBSFND | 0016                  | SAP Business Suite Foundation |
-| SAP_ABA            | 750     | SAPK-75020INSAPABA   | 0020                  | Cross-Application Component   |
-| SAP_BASIS          | 750     | SAPK-75020INSAPBASIS | 0020                  | SAP Basis Component           |
-| SAP_GWFND          | 750     | SAPK-75020INSAPGWFND | 0020                  | SAP Gateway Foundation        |
-| SAP_UI             | 754     | SAPK-75405INSAPUI    | 0005                  | User Interface Technology     |
+### Functional Tests
+Validated on ABAP 2022 sp01 successfully
 
 ## Usage
 Check out the detailed description with screenshots at sapdev.eu
@@ -71,7 +50,7 @@ A – After deploying from WebIDE Fullstack, Business Application Studio or VSCo
 B – After You changed PFCG roles, included new target applications in catalogs, adjusted role assignments, but they do not appear on Fiori Launchpad.
 Please also validate manually whether the User Comparison is executed in the target system, where the transport request is imported containing the adjusted PFCG role. This can be also one of the reasons of access problems. The validation and comparison can be done manually in transaction PFCG, or executing a mass report in the target system.
 
-C – This symptom become more in the foreground with metadata driven applications. You perform changes to the OData service, but it is not reflected on the UI. You added annotations to the metadata extension file, or new fields to the consumption view. I would like to mention here that, please do not run this feature with * without a good reason. In such case I would immediately take my chainsaw from my drawer my dear as Your colleague :).
+C – This symptom become more in the foreground with metadata driven applications. You perform changes to the OData service, but it is not reflected on the UI. You added annotations to the metadata extension file, or new fields to the consumption view. I would like to mention here that, please do not run this feature with * (V2) or empty (V4) without a good reason. In such case I would immediately take my chainsaw from my drawer my dear as Your colleague :sweat_smile:.
 
 Hint: when using CDS entities as reference model in SEGW projects, the generation of the project might required, which has nothing to do with the cache. In case You enhanced a standard CDS view in such setup, You might faced the issue that a value help annotation will never be part of the OData service, because this would need the regeneration of the SEGW project => standard modification.
 
