@@ -32,7 +32,7 @@ All of them are already part of the standard already, but You reach them through
 
 ## Test results
 ### ATC
-- Passed
+- Variant TRANSPORT Passed
 
 ### Functional Tests
 Validated on ABAP 2022 sp01 successfully
