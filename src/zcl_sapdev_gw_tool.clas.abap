@@ -132,8 +132,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD zif_sapdev_gw_tool~wipe_odata_meta_cache.
-
-    IF lines(  i_service_ranges ) = 0.
+    IF lines( i_service_ranges ) = 0.
       IF me->output_mode = gc_output_mode-gui_output.
         MESSAGE 'Please select at least one service'(003) TYPE 'I' DISPLAY LIKE 'E'.
       ELSE.
@@ -142,25 +141,22 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    SELECT * FROM /iwfnd/i_med_srh INTO TABLE @DATA(services)
+    SELECT * FROM /iwfnd/i_med_srh
+      INTO TABLE @DATA(services)
       WHERE srv_identifier IN @i_service_ranges.
 
     LOOP AT services INTO DATA(service).
 
-      /iwfnd/cl_sutil_moni=>cleanup_metadata_cache(
-        EXPORTING
-          iv_mode            = 'A'
-          iv_multi_origin    = abap_true
-          iv_namespace       = service-namespace  "'/SAP/'
-          iv_service_name    = service-service_name
-          iv_service_version = service-service_version
-        IMPORTING
-          ev_error_text      = DATA(error_text)
-      ).
+      /iwfnd/cl_sutil_moni=>cleanup_metadata_cache( EXPORTING iv_mode            = 'A'
+                                                              iv_multi_origin    = abap_true
+                                                              iv_namespace       = service-namespace  "'/SAP/'
+                                                              iv_service_name    = service-service_name
+                                                              iv_service_version = service-service_version
+                                                    IMPORTING ev_error_text      = DATA(error_text) ).
 
       IF error_text IS NOT INITIAL.
         IF me->output_mode = gc_output_mode-gui_output.
-          WRITE: / icon_error_protocol AS ICON, service-srv_identifier.
+          WRITE: / icon_error_protocol AS ICON, service-srv_identifier. "#EC CI_NOORDER
           WRITE: / '  ', error_text.
         ELSE.
           APPEND |ERROR: { service-srv_identifier } | TO result.
@@ -169,7 +165,7 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
         CONTINUE.
       ELSE.
         IF me->output_mode = gc_output_mode-gui_output.
-          WRITE: / icon_okay AS ICON, service-srv_identifier.
+          WRITE: / icon_okay AS ICON, service-srv_identifier. "#EC CI_NOORDER
         ELSE.
           APPEND |Wiped: { service-srv_identifier }| TO result ##NO_TEXT.
         ENDIF.
@@ -185,7 +181,6 @@ CLASS zcl_sapdev_gw_tool IMPLEMENTATION.
         APPEND |{ no_hits }| TO result.
       ENDIF.
     ENDIF.
-
   ENDMETHOD.
 
   METHOD zif_sapdev_gw_tool~get_show_icf_active.

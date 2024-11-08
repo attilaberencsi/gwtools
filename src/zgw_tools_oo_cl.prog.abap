@@ -60,15 +60,22 @@ CLASS lcl_gw_tool IMPLEMENTATION.
         gw_tool->wipe_odata_meta_cache( i_service_ranges = serv_id[] ).
 
       WHEN p_wipem4.
+
+        IF p_srvid4 IS INITIAL.
+          MESSAGE 'Please Select a Service first' TYPE 'I' DISPLAY LIKE 'E' ##NO_TEXT.
+          RETURN.
+        ENDIF.
+
         DATA(error_text) = gw_tool->wipe_odata_meta_cache_v4(
                                i_group_id    = p_srvgrp
                                i_service_key = VALUE #( repository_id   = p_srvrep
                                                         service_id      = p_srvid4
                                                         service_version = p_srvve4    ) ).
+
         IF error_text IS NOT INITIAL.
           MESSAGE error_text TYPE 'I' DISPLAY LIKE 'E'.
         ELSE.
-          MESSAGE 'Metadata and Annotation Model/Text Cache wiped successfully' TYPE 'S'.
+          MESSAGE 'Metadata and Annotation Model/Text Cache wiped successfully' TYPE 'S' ##NO_TEXT.
         ENDIF.
 
       WHEN p_icfact.
@@ -89,7 +96,7 @@ CLASS lcl_gw_tool IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD f4_odata_v4_srv_cache.
-    SELECT * FROM ZI_SAPDEV_V4_Cache INTO TABLE @DATA(g_v4caches).
+    SELECT * FROM ZI_SAPDEV_V4_Cache INTO TABLE @DATA(g_v4caches). "#EC CI_NOWHERE
 
     g_f4_field_mapping_srv4 = VALUE #( ( fldname = 'F0001' dyfldname  = 'P_SRVGRP' )
                                        ( fldname = 'F0002' dyfldname  = 'P_SRVREP' )
@@ -103,7 +110,7 @@ CLASS lcl_gw_tool IMPLEMENTATION.
         dynpnr          = sy-dynnr
         dynprofield     = 'P_SRVID4'
         window_title    = 'V4 Cache'
-        value_org       = 'S'
+        value_org       = 'S' ##NO_TEXT
       TABLES
         value_tab       = g_v4caches
         return_tab      = g_f4_field_return_srv4
@@ -112,6 +119,10 @@ CLASS lcl_gw_tool IMPLEMENTATION.
         parameter_error = 1
         no_values_found = 2
         OTHERS          = 3.
+
+    IF sy-subrc <> 0.
+      RETURN.
+    ENDIF.
 
     TRY.
         p_srvgrp = g_f4_field_return_srv4[ 1 ]-fieldval.
