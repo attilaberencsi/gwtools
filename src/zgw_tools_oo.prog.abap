@@ -68,6 +68,15 @@ AT SELECTION-SCREEN.
 
   ENDCASE.
 
+AT SELECTION-SCREEN OUTPUT.
+  LOOP AT SCREEN.
+    IF screen-group1 = 'SV4'.
+      screen-input = 0.
+      MODIFY SCREEN.
+    ENDIF.
+  ENDLOOP.
+
+
 AT SELECTION-SCREEN ON VALUE-REQUEST FOR p_srvid4.
   lcl_gw_tool=>f4_odata_v4_srv_cache( ).
 

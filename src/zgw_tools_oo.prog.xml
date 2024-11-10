@@ -228,9 +228,27 @@
     </item>
     <item>
      <ID>S</ID>
+     <KEY>P_SRVGRP</KEY>
+     <ENTRY>of Service Group</ENTRY>
+     <LENGTH>24</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
      <KEY>P_SRVID4</KEY>
      <ENTRY>of Service</ENTRY>
      <LENGTH>18</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_SRVREP</KEY>
+     <ENTRY>Repository</ENTRY>
+     <LENGTH>18</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_SRVVE4</KEY>
+     <ENTRY>Version</ENTRY>
+     <LENGTH>15</LENGTH>
     </item>
     <item>
      <ID>S</ID>
